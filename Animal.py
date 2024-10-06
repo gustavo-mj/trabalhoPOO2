@@ -1,3 +1,5 @@
+from datetime import date
+
 class Animal:
     # Atributos: chip, nome, raça, tamanho
     def __init__(self, chip: str, nome: str, raca: str, tamanho: str):
@@ -12,8 +14,10 @@ class Animal:
             self.__nome = nome
         if isinstance(raca, str):
             self.__raca = raca
-        if isinstance(tamanho, str):
+        if tamanho in ['pequeno', 'média', 'grande']:
             self.__tamanho = tamanho
+        
+        self.__historicoVacinas = []
 
     # Getter e Setter para chip
     @property
@@ -52,5 +56,16 @@ class Animal:
 
     @tamanho.setter
     def tamanho(self, tamanho: str):
-        if isinstance(tamanho, str):
+        if tamanho in ['pequeno', 'média', 'grande']:
             self.__tamanho = tamanho
+
+    @property
+    def historicoVacinas(self) -> list:
+        return self.__historicoVacinas
+
+    def addVacina(self, vacina: str, data: date):
+        if isinstance(vacina, str) and isinstance(data, date):
+            self.__historicoVacinas.append((data, vacina))
+
+    def apto(self) -> bool:
+        return (all(vacina in [v for _, v in self.__historicoVacinas] for vacina in ['raiva', 'leptospirose', 'hepatite infecciosa']))

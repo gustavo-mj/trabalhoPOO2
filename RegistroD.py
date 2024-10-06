@@ -1,15 +1,16 @@
 from Pessoa import Pessoa
 from Animal import Animal
+from datetime import date
 
 class RegistroD:
     # Atributos: data, animal, doador, motivo
-    def __init__(self, data: str, animal: Animal, doador: Pessoa, motivo: str):
+    def __init__(self, data: date, animal: Animal, doador: Pessoa, motivo: str):
         self.__data = None
         self.__animal = None
         self.__doador = None
         self.__motivo = None
         
-        if isinstance(data, str):
+        if isinstance(data, date):
             self.__data = data
         if isinstance(animal, Animal):
             self.__animal = animal
@@ -20,12 +21,12 @@ class RegistroD:
 
     # Getter e Setter para data
     @property
-    def data(self) -> str:
+    def data(self) -> date:
         return self.__data
 
     @data.setter
-    def data(self, data: str):
-        if isinstance(data, str):
+    def data(self, data: date):
+        if isinstance(data, date):
             self.__data = data
 
     # Getter e Setter para animal

@@ -83,9 +83,10 @@ classDiagram
         -list~Pessoa~ __pessoas
         -list~RegistroD~ __doacoes
         -list~RegistroA~ __adocoes
-        +cadastrarPessoa(pessoa: Pessoa)
+        +cadastrarPessoa(cpf: str, nome: str, dataNasc: str, endereco: str, tipoHab: str, tamanhoHab: str, numeroAnimais: int)
+        +cadastrarAdotante(cpf: str, nome: str, dataNasc: str, endereco: str, tipoHab: str, tamanhoHab: str, numeroAnimais: int)
         +excluirPessoa(pessoa: Pessoa)
-        +cadastrarAnimal(animal: Animal)
+        +cadastrarAnimal(chip: str, nome: str, raca: str, tamanho: str)
         +excluirAnimal(animal: Animal)
         +animais: list~Animal~
         +pessoas: list~Pessoa~
