@@ -109,7 +109,7 @@ classDiagram
     RegistroD "1" o-- "1" Pessoa : doador
     RegistroA "1" o-- "1" Animal : animal
     RegistroA "1" o-- "1" Pessoa : adotante
-    Sistema "1" --> "many" Pessoa : pessoa
-    Sistema "1" --> "many" Animal : animal
-    Sistema "1" --> "many" RegistroD : doação
-    Sistema "1" --> "many" RegistroA : adoção
+    Sistema "1" o-- "many" Pessoa : pessoa
+    Sistema "1" o-- "many" Animal : animal
+    Sistema "1" *-- "many" RegistroD : doação
+    Sistema "1" *-- "many" RegistroA : adoção
