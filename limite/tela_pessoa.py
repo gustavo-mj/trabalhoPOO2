@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class TelaPessoa():
 
     def tela_opcoes(self):
@@ -16,30 +18,29 @@ class TelaPessoa():
         print("-------- DADOS PESSOA ----------")
         cpf = int(input("CPF: "))
         nome = input("Nome completo: ")
-        dataNasc = input("Data de nascimento: ")
+        dataNasc = datetime.strptime(input("Data de nascimento(dd/mm/aaaa): "), "%d/%m/%Y").date()
         endereco = input("Endereço: ")
-        tipoHab = input("Tipo de habitação: ")
-        tamanhoHab = input("Tamanho da habitação: ")
+        tipoHab = int(input("Tipo de habitação(1 - casa; 2- apartamento): "))
+        tamanhoHab = int(input("Tamanho da habitação(1 - pequeno; 2 - médio; 3 - grande): "))
         numeroAnimais = int(input("Número de animais: "))
 
         return {
-            "CPF": cpf,
+            "cpf": cpf,
             "nome": nome,
-            "data de nascimento" : dataNasc,
-            "endereço" : endereco,
-            "tipo de habitação" : tipoHab,
-            "tamanho da habitação" : tamanhoHab,
-            "número de animais" : numeroAnimais 
-        }
+            "data_de_nascimento" : dataNasc,
+            "endereco" : endereco,
+            "tipo_de_habitacao" : tipoHab,
+            "tamanho_da_habitacao" : tamanhoHab,
+            "numero_de_animais" : numeroAnimais}
 
     def mostra_pessoa(self, dados_pessoa):
-        print("CPF: ", dados_pessoa["CPF"])
+        print("CPF: ", dados_pessoa["cpf"])
         print("NOME COMPLETO: ", dados_pessoa["nome"])
-        print("DATA DE NASCIMENTO: ", dados_pessoa["data de nascimento"])
-        print("ENDEREÇO: ", dados_pessoa["endereço"])
-        print("TIPO DE HABITAÇÃO: ", dados_pessoa["tipo de habitação"])
-        print("TAMANHO DA HABITAÇÃO: ", dados_pessoa["tamanho da habitação"])
-        print("NÚMERO DE ANIMAIS: ", dados_pessoa["número de animais"])
+        print("DATA DE NASCIMENTO: ", dados_pessoa["data_de_nascimento"])
+        print("ENDEREÇO: ", dados_pessoa["endereco"])
+        print("TIPO DE HABITAÇÃO: ", dados_pessoa["tipo_de_habitacao"])
+        print("TAMANHO DA HABITAÇÃO: ", dados_pessoa["tamanho_da_habitacao"])
+        print("NÚMERO DE ANIMAIS: ", dados_pessoa["numero_de_animais"])
         print("\n")
 
     def seleciona_pessoa(self):

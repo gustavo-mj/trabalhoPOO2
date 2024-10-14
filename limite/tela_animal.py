@@ -17,19 +17,19 @@ class TelaAnimal():
         chip = int(input("Chip: "))
         nome = input("Nome: ")
         raca = input("Raça: ")
-        tamanho = input("Tamanho: ")
+        tamanho = int(input("Tamanho(1 - pequeno; 2 - médio; 3 - grande): "))
 
         return {
             "chip": chip,
             "nome": nome,
-            "raça" : raca,
+            "raca" : raca,
             "tamanho" : tamanho
         }
 
     def mostra_animal(self, dados_animal):
         print("CHIP: ", dados_animal["chip"])
         print("NOME: ", dados_animal["nome"])
-        print("RAÇA: ", dados_animal["raça"])
+        print("RAÇA: ", dados_animal["raca"])
         print("TAMANHO: ", dados_animal["tamanho"])
         print("\n")
 

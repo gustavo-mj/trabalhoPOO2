@@ -63,7 +63,7 @@ class ControladorDoacoes():
         else:
             self.__tela_doacao.mostra_mensagem("ATENÇÃO: esta doação não existe.")
 
-    def retonar(self):
+    def retornar(self):
         self.__controlador_sistema.abre_tela()
     
     def abre_tela(self):

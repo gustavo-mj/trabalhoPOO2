@@ -9,6 +9,10 @@ class ControladorAnimal():
         self.__controlador_sistema = controlador_sistema
         self.__tela_animal = TelaAnimal()
 
+    @property
+    def animais(self) -> list:
+        return self.__animais
+
     def pega_animal_por_chip(self, chip: int):
         for animal in self.__animais:
             if(animal.chip == chip):
@@ -22,8 +26,8 @@ class ControladorAnimal():
             animal = Animal(
                 dados_animal["chip"],
                 dados_animal["nome"],
-                dados_animal["raça"],
-                dados_animal["tamanho"]
+                dados_animal["raca"],
+                TamanhoAnimal(dados_animal["tamanho"])
             )
             self.__animais.append(animal)
         else:
@@ -38,8 +42,8 @@ class ControladorAnimal():
             novos_dados_animal = self.__tela_animal.pega_dados_animal()
             animal.chip = novos_dados_animal["chip"]
             animal.nome = novos_dados_animal["nome"]
-            animal.raca = novos_dados_animal["raça"]
-            animal.tamanho = novos_dados_animal["tamanho"]
+            animal.raca = novos_dados_animal["raca"]
+            animal.tamanho = TamanhoAnimal(novos_dados_animal["tamanho"])
             self.lista_animal()
         else:
             self.__tela_animal.mostra_mensagem("ATENÇÃO: Animal não cadastrado.")
@@ -49,8 +53,8 @@ class ControladorAnimal():
             self.__tela_animal.mostra_animal({
                 "chip" : animal.chip,
                 "nome" : animal.nome,
-                "raça" : animal.raca,
-                "tamanho" : animal.tamanho
+                "raca" : animal.raca,
+                "tamanho" : animal.tamanho.name
             })
 
     def excluir_animal(self):

@@ -22,10 +22,25 @@ class ControladorVacina():
         animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(dados_doacao["chip"])
         
         if (animal is not None):
-            vacina = Vacina(randint(0, 100), animal, dados_doacao["tipo"], dados_doacao['data'])
+            vacina = Vacina(randint(0, 100), animal, Tipo(dados_doacao["tipo_vacinal"]), dados_doacao['data'])
             self.__vacinacoes.append(vacina)
         else:
             self.__tela_vacinacao.mostra_mensagem("Dados inválidos.")
+
+    def alterar_cadastro(self):
+        self.lista_vacinacoes()
+        codigo_vacinacao = self.__tela_vacinacao.seleciona_vacinacao()
+        vacina = self.pega_vacina_por_codigo(codigo_vacinacao)
+
+        if(vacina is not None):
+            novos_dados_vacina = self.__tela_pessoa.pega_dados_vacina()
+            animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(novos_dados_vacina["chip"])
+            vacina.animal = animal
+            vacina.data = novos_dados_vacina["data"]
+            vacina.tipo = Tipo(novos_dados_vacina["tipo_vacinal"])
+            self.lista_vacinacoes()
+        else:
+            self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Vacinação não existe.")
 
     def lista_vacinacoes(self):
         for v in self.__vacinacoes:
@@ -33,7 +48,7 @@ class ControladorVacina():
                 "codigo" : v.codigo,
                 "nome_animal" : v.animal.nome,
                 "chip_animal" : v.animal.chip,
-                "tipo_vacina" : v.tipo
+                "tipo_vacinal" : v.tipo
             })
 
     def lista_vacinas_por_animal(self, chip: int):
@@ -58,7 +73,7 @@ class ControladorVacina():
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.cadastrar_vacinacao, 2: self.lista_vacinacoes, 3: self.excluir_vacinacao, 0: self.retornar}
+        lista_opcoes = {1: self.cadastrar_vacinacao, 2: self.alterar_cadastro, 3: self.lista_vacinacoes, 4: self.excluir_vacinacao, 0: self.retornar}
 
         continua = True
         while continua:

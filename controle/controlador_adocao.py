@@ -18,15 +18,16 @@ class ControladorAdocoes():
         return None
 
     def cadastrar_adocao(self):
-        self.__controlador_sistema.controlador_animais.lista_animal()
+        self.listar_disponveis_para_adocao()
         self.__controlador_sistema.controlador_pessoas.lista_pessoa()
         dados_adocao = self.__tela_adocao.pega_dados_adocao()
 
         animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(dados_adocao["chip"])
         pessoa = self.__controlador_sistema.controlador_pessoas.pega_pessoa_por_cpf(dados_adocao["cpf"])
         #adição minha
+        data_nascimento = self.__controlador_sistema.controlador_pessoas.pega_pessoa_por_cpf(dados_adocao["cpf"]).dataNasc
         data = dados_adocao["data"]
-        diferenca = relativedelta(data, pessoa.dataNasc)
+        diferenca = relativedelta(data, data_nascimento)
         vacinasTomadas = self.__controlador_sistema.controlador_vacinacoes.lista_vacinas_por_animal(dados_adocao["chip"])
         #acaba aqui
 

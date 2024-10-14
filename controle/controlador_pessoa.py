@@ -17,16 +17,16 @@ class ControladorPessoa():
 
     def cadastrar_pessoa(self):
         dados_pessoa = self.__tela_pessoa.pega_dados_pessoa()
-        p = self.pega_pessoa_por_cpf(dados_pessoa["CPF"])
+        p = self.pega_pessoa_por_cpf(dados_pessoa["cpf"])
         if p is None:
             pessoa = Pessoa(
-                dados_pessoa["CPF"],
+                dados_pessoa["cpf"],
                 dados_pessoa["nome"],
-                dados_pessoa["data de nascimento"],
-                dados_pessoa["endereço"],
-                dados_pessoa["tipo de habitação"],
-                dados_pessoa["tamanho da habitação"],
-                dados_pessoa["número de animais"]
+                dados_pessoa["data_de_nascimento"],
+                dados_pessoa["endereco"],
+                TipoHab(dados_pessoa["tipo_de_habitacao"]),
+                TamanhoHab(dados_pessoa["tamanho_da_habitacao"]),
+                dados_pessoa["numero_de_animais"]
             )
             self.__pessoas.append(pessoa)
         else:
@@ -39,13 +39,13 @@ class ControladorPessoa():
 
         if(pessoa is not None):
             novos_dados_pessoa = self.__tela_pessoa.pega_dados_pessoa()
-            pessoa.cpf = novos_dados_pessoa["CPF"]
+            pessoa.cpf = novos_dados_pessoa["cpf"]
             pessoa.nome = novos_dados_pessoa["nome"]
-            pessoa.dataNasc = novos_dados_pessoa["data de nascimento"]
-            pessoa.endereco = novos_dados_pessoa["endereço"]
-            pessoa.tipoHab = novos_dados_pessoa["tipo de habitação"]
-            pessoa.tamanhoHab = novos_dados_pessoa["tamanho da habitação"]
-            pessoa.numeroAnimais = novos_dados_pessoa["número de animais"]
+            pessoa.dataNasc = novos_dados_pessoa["data_de_nascimento"]
+            pessoa.endereco = novos_dados_pessoa["endereco"]
+            pessoa.tipoHab = TipoHab(novos_dados_pessoa["tipo_de_habitacao"])
+            pessoa.tamanhoHab = TamanhoHab(novos_dados_pessoa["tamanho_da_habitacao"])
+            pessoa.numeroAnimais = novos_dados_pessoa["numero_de_animais"]
             self.lista_pessoa()
         else:
             self.__tela_pessoa.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
@@ -53,13 +53,13 @@ class ControladorPessoa():
     def lista_pessoa(self):
         for pessoa in self.__pessoas:
             self.__tela_pessoa.mostra_pessoa({
-                "CPF" : pessoa.cpf,
+                "cpf" : pessoa.cpf,
                 "nome" : pessoa.nome,
-                "data de nascimento" : pessoa.dataNasc,
-                "endereço" : pessoa.endereco,
-                "tipo de habitação" : pessoa.tipoHab,
-                "tamanho da habitação" : pessoa.tamanhoHab,
-                "númmero de animais" : pessoa.numeroAnimais
+                "data_de_nascimento" : pessoa.dataNasc,
+                "endereco" : pessoa.endereco,
+                "tipo_de_habitacao" : pessoa.tipoHab.name,
+                "tamanho_da_habitacao" : pessoa.tamanhoHab.name,
+                "numero_de_animais" : pessoa.numeroAnimais
             })
 
     def excluir_pessoa(self):

@@ -231,30 +231,30 @@ classDiagram
         +tela_opcoes(): int
     }
 
-    Pessoa "many" --* "1" ControladorPessoa
-    TelaPessoa "1" --* "1" ControladorPessoa
+    Pessoa "many" <-- "1" ControladorPessoa
+    TelaPessoa "1" <-* "1" ControladorPessoa
 
-    Animal "many" --* "1" ControladorAnimal
-    TelaAnimal "1" --* "1" ControladorAnimal
+    Animal "many" <-- "1" ControladorAnimal
+    TelaAnimal "1" <-* "1" ControladorAnimal
 
-    Vacina "many" --* "1" ControladorVacina
-    TelaVacina "1" --* "1" ControladorVacina
+    Vacina "many" <-- "1" ControladorVacina
+    TelaVacina "1" <-* "1" ControladorVacina
     Vacina "1" --> "1" Animal: animal
 
-    Doacao "many" --* "1" ControladorDoacoes
-    TelaDoacao "1" --* "1" ControladorDoacoes
+    Doacao "many" <-* "1" ControladorDoacoes
+    TelaDoacao "1" <-* "1" ControladorDoacoes
     Doacao "1" --> "1" Animal: animal
-    Doacao "1" -- > "1" Pessoa: doador
+    Doacao "1" --> "1" Pessoa: doador
 
-    Adocao "many" --* "1" ControladorAdocoes
-    TelaAdocao "1" --* "1" ControladorAdocoes
+    Adocao "many" <-* "1" ControladorAdocoes
+    TelaAdocao "1" <-* "1" ControladorAdocoes
     Adocao "1" --> "1" Animal: animal
-    Adocao "1" -- > "1" Pessoa: adotante
+    Adocao "1" --> "1" Pessoa: adotante
 
-    TelaSistema "1" --* "1" ControladorSistema
+    TelaSistema "1" <-* "1" ControladorSistema
 
-    ControladorPessoa "1" --* "1" ControladorSistema
-    ControladorAnimal "1" --* "1" ControladorSistema
-    ControladorVacina "1" --* "1" ControladorSistema
-    ControladorAdocoes "1" --* "1" ControladorSistema
-    ControladorDoacoes "1" --* "1" ControladorSistema
+    ControladorPessoa "1" <-* "1" ControladorSistema
+    ControladorAnimal "1" <-* "1" ControladorSistema
+    ControladorVacina "1" <-* "1" ControladorSistema
+    ControladorAdocoes "1" <-* "1" ControladorSistema
+    ControladorDoacoes "1" <-* "1" ControladorSistema
