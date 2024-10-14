@@ -6,16 +6,16 @@ Tema: Padrão (ONG de Adoção)
 
 classDiagram
     class Pessoa {
-        -str __cpf
+        -int __cpf
         -str __nome
         -str __dataNasc
         -str __endereco
         -str __tipoHab
         -str __tamanhoHab
         -int __numeroAnimais
-        + <<create>> __init__(cpf: str, nome: str, dataNasc: date, endereco: str, tipoHab: str, tamanhoHab: str, numeroAnimais: int)
-        +cpf(): str
-        +cpf(str)
+        + <<create>> __init__(cpf: int, nome: str, dataNasc: date, endereco: str, tipoHab: str, tamanhoHab: str, numeroAnimais: int)
+        +cpf(): int
+        +cpf(int)
         +nome(): str
         +nome(str)
         +dataNasc(): date
@@ -28,7 +28,6 @@ classDiagram
         +tamanhoHab(str)
         +numeroAnimais(): int
         +numeroAnimais(int)
-        +idade(data:date): int
     }
 
     class Animal {
@@ -36,29 +35,25 @@ classDiagram
         -str __nome
         -str __raca
         -str __tamanho
-        -list~str~ __historicoVacinas
-        + <<create>> __init__(chip: str, nome: str, raca: str, tamanho: str)
-        +chip(): str
-        +chip(str)
+        + <<create>> __init__(chip: int, nome: str, raca: str, tamanho: str)
+        +chip(): int
+        +chip(int)
         +nome(): str
         +nome(str)
         +raca(): str
         +raca(str)
         +tamanho(): str
         +tamanho(str)
-        +historicoVacinas(): list~str~
-        +addVacina(vacina: str, data: date)
-        +apto(): bool
     }
 
-    class RegistroD {
+    class Doacao {
         -str __data
         -Animal __animal
         -Pessoa __doador
         -str __motivo
-        + <<create>> __init__(data: str, animal: Animal, doador: Pessoa, motivo: str)
-        +data(): str
-        +data(str)
+        + <<create>> __init__(data: date, animal: Animal, doador: Pessoa, motivo: str)
+        +data(): date
+        +data(date)
         +animal(): Animal
         +animal(Animal)
         +doador(): Pessoa
@@ -67,14 +62,14 @@ classDiagram
         +motivo(str)
     }
 
-    class RegistroA {
+    class Adocao {
         -str __data
         -Animal __animal
         -Pessoa __adotante
         -bool __termo
-        + <<create>> __init__(data: str, animal: Animal, adotante: Pessoa, termo: bool)
-        +data(): str
-        +data(str)
+        + <<create>> __init__(data: date, animal: Animal, adotante: Pessoa, termo: bool)
+        +data(): date
+        +data(date)
         +animal(): Animal
         +animal(Animal)
         +adotante(): Pessoa
@@ -83,33 +78,183 @@ classDiagram
         +termo(bool)
     }
 
-    class Sistema {
-        -list~Animal~ __animais
-        -list~Pessoa~ __pessoas
-        -list~RegistroD~ __doacoes
-        -list~RegistroA~ __adocoes
-        + <<create>> __init__()
-        +animais: list~Animal~
-        +pessoas: list~Pessoa~
-        +doacoes: list~RegistroD~
-        +adocoes: list~RegistroA~
-        +cadastrarPessoa(cpf: str, nome: str, dataNasc: str, endereco: str, tipoHab: str, tamanhoHab: str, numeroAnimais: int)
-        +cadastrarAdotante(cpf: str, nome: str, dataNasc: str, endereco: str, tipoHab: str, tamanhoHab: str, numeroAnimais: int)
-        +excluirPessoa(pessoa: Pessoa)
-        +cadastrarAnimal(chip: str, nome: str, raca: str, tamanho: str)
-        +excluirAnimal(animal: Animal)
-        +cadastrarDoacao(data: date, animal: Animal, doador: Pessoa, motivo: str)
-        +cadastrarAdocao(data: date, animal: Animal, adotante: Pessoa)
-        +relatorioDoacoes(comeco: date, fim: date): list~RegistroD~
-        +relatorioAdocoes(comeco: date, fim: date): list~RegistroA~
-        +disponiveisParaAdocao(): list~Animal~
+    class Vacina {
+        -int __codigo
+        -Animal __animal
+        -str __tipo
+        -date __data
+        + <<create>> __init__(codigo: int, animal: Animal, tipo: str, data: date)
+        +codigo(): int
+        +codigo(int)
+        +animal(): Animal
+        +animal(Animal)
+        +tipo(): str
+        +tipo(str)
     }
 
-    RegistroD "1" o-- "1" Animal : animal
-    RegistroD "1" o-- "1" Pessoa : doador
-    RegistroA "1" o-- "1" Animal : animal
-    RegistroA "1" o-- "1" Pessoa : adotante
-    Sistema "1" o-- "many" Pessoa : pessoa
-    Sistema "1" o-- "many" Animal : animal
-    Sistema "1" *-- "many" RegistroD : doação
-    Sistema "1" *-- "many" RegistroA : adoção
+    class ControladorPessoa {
+        -list~Pessoa~ __pessoas
+        -ControladorSistema __controlador_sistema
+        -TelaPessoa __tela_pessoa
+        + <<create>> __init__(controlador_sistema: ControladorSistema)
+        +pega_pessoa_por_cpf(cpf: int): Pessoa
+        +cadastrar_pessoa()
+        +alterar_cadastro()
+        +lista_pessoa()
+        +excluir_pessoa()
+        +retornar()
+        +abre_tela()
+    }
+
+    class ControladorAnimal {
+        -list~Animal~ __animais
+        -ControladorSistema __controlador_sistema
+        -TelaAnimal __tela_animal
+        + <<create>> __init__(controlador_sistema: ControladorSistema)
+        +pega_animal_por_chip(chip: int): Animal
+        +cadastrar_animal()
+        +alterar_cadastro()
+        +lista_animal()
+        +excluir_animal()
+        +retornar()
+        +abre_tela()
+    }
+
+    class ControladorVacina {
+        -ControladorSistema __controlador_sistema
+        -list~Vacina~ __vacinacoes
+        -TelaVacina __tela_vacinacao
+        + <<create>> __init__(controlador_sistema: ControladorSistema)
+        +pega_vacina_por_codigo(codigo: int): Vacina
+        +cadastrar_vacinacao()
+        +lista_vacinacoes()
+        +lista_vacinas_por_animal(chip: int): list~str~
+        +excluir_vacinacao()
+        +retornar()
+        +abre_tela()
+    }
+
+    class ControladorDoacoes {
+        -ControladorSistema __controlador_sistema
+        -list~Doacao~ __doacoes
+        -TelaDoacao __tela_doacao
+        + <<create>> __init__(controlador_sistema: ControladorSistema)
+        +pega_doacao_por_codigo(codigo: int): Doacao
+        +cadastrar_doacao()
+        +lista_doacao()
+        +excluir_doacao()
+        +retornar()
+        +abre_tela()
+    }
+
+    class ControladorAdocoes {
+        -ControladorSistema __controlador_sistema
+        -list~Adocao~ __adocoes
+        -TelaAdocao __tela_adocao
+        + <<create>> __init__(controlador_sistema: ControladorSistema)
+        +pega_adocao_por_codigo(codigo: int) Adocao
+        +cadastrar_adocao()
+        +lista_adocao()
+        +excluir_adocao()
+        +listar_disponveis_para_adocao() list~dict~
+        +retornar()
+        +abre_tela()
+    }
+
+    class ControladorSistema {
+        -ControladorAnimal __controlador_animais
+        -ControladorPessoa __controlador_pessoas
+        -ControladorDoacoes __controlador_doacoes
+        -ControladorAdocoes __controlador_adocoes
+        -ControladorVacina __controlador_vacinacoes
+        -TelaSistema __tela_sistema
+        + <<create>> __init__()
+        +controlador_animais(): ControladorAnimal
+        +controlador_pessoas(): ControladorPessoa
+        +controlador_doacoes(): ControladorDoacoes
+        +controlador_adocoes(): ControladorAdocoes
+        +controlador_vacinacoes(): ControladorVacina
+        +inicializa_sistema()
+        +cadastra_animal()
+        +cadastra_pessoa()
+        +cadastra_doacao()
+        +cadastra_adocao()
+        +cadastra_vacinacao()
+        +encerra_sistema()
+        +abre_tela()
+    }
+
+    class TelaPessoa {
+        +tela_opcoes(): int
+        +pega_dados_pessoa(): dict
+        +mostra_pessoa(dados_pessoa: dict)
+        +seleciona_pessoa(): int
+        +mostra_mensagem(msg: str)
+    }
+
+    class TelaAnimal {
+        +tela_opcoes(): int
+        +pega_dados_animal(): dict
+        +mostra_pessoa(dados_animal: dict)
+        +seleciona_animal(): int
+        +mostra_mensagem(msg: str)
+    }
+
+    class TelaVacina {
+        +tela_opcoes(): int
+        +pega_dados_vacina(): dict
+        +mostra_vacinacao(dados_vacinacao: dict)
+        +seleciona_vacinacao(): int
+        +mostra_mensagem(msg: str)
+    }
+
+    class TelaDoacao {
+        +tela_opcoes(): int
+        +pega_dados_doacao(): dict
+        +mostra_doacao(dados_doacao: dict)
+        +seleciona_doacao(): int
+        +pega_dados_listagem(): dict
+        +mostra_mensagem(msg: str)
+    }
+
+    class TelaAdocao {
+        +tela_opcoes(): int
+        +pega_dados_adocao(): dict
+        +mostra_adocao(dados_adocao: dict)
+        +seleciona_adocao(): int
+        +pega_dados_listagem(): dict
+        +mostra_disponiveis(dados_disponiveis: dict)
+        +mostra_mensagem(msg: str)
+    }
+
+    class TelaSistema {
+        +tela_opcoes(): int
+    }
+
+    Pessoa "many" --* "1" ControladorPessoa
+    TelaPessoa "1" --* "1" ControladorPessoa
+
+    Animal "many" --* "1" ControladorAnimal
+    TelaAnimal "1" --* "1" ControladorAnimal
+
+    Vacina "many" --* "1" ControladorVacina
+    TelaVacina "1" --* "1" ControladorVacina
+    Vacina "1" --> "1" Animal: animal
+
+    Doacao "many" --* "1" ControladorDoacao
+    TelaDoacao "1" --* "1" ControladorDoacao
+    Doacao "1" --> "1" Animal: animal
+    Doacao "1" -- > "1" Pessoa: doador
+
+    Adocao "many" --* "1" ControladorAdocao
+    TelaAdocao "1" --* "1" ControladorAdocao
+    Adocao "1" --> "1" Animal: animal
+    Adocao "1" -- > "1" Pessoa: adotante
+
+    TelaSistema "1" --* "1" ControladorSistema
+
+    ControladorPessoa "1" --* "1" ControladorSistema
+    ControladorAnimal "1" --* "1" ControladorSistema
+    ControladorVacina "1" --* "1" ControladorSistema
+    ControladorAdocao "1" --* "1" ControladorSistema
+    ControladorDoacao "1" --* "1" ControladorSistema
