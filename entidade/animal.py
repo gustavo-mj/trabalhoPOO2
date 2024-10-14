@@ -1,32 +1,37 @@
 from datetime import date
+from enum import Enum
+
+class TamanhoAnimal(Enum):
+    pequeno = 1
+    medio = 2
+    grande = 3
 
 class Animal:
-    # Atributos: chip, nome, raça, tamanho
-    def __init__(self, chip: str, nome: str, raca: str, tamanho: str):
+    # Atributos: chip, nome, raça, tamanho, carteira vacinal
+    def __init__(self, chip: int, nome: str, raca: str, tamanho: TamanhoAnimal):
         self.__chip = None
         self.__nome = None
         self.__raca = None
         self.__tamanho = None
+        self.__carteiraVacinacao = []
         
-        if isinstance(chip, str):
+        if isinstance(chip, int):
             self.__chip = chip
         if isinstance(nome, str):
             self.__nome = nome
         if isinstance(raca, str):
             self.__raca = raca
-        if tamanho in ['pequeno', 'média', 'grande']:
+        if isinstance(tamanho, TamanhoAnimal):
             self.__tamanho = tamanho
-        
-        self.__historicoVacinas = []
 
     # Getter e Setter para chip
     @property
-    def chip(self) -> str:
+    def chip(self) -> int:
         return self.__chip
 
     @chip.setter
-    def chip(self, chip: str):
-        if isinstance(chip, str):
+    def chip(self, chip: int):
+        if isinstance(chip, int):
             self.__chip = chip
 
     # Getter e Setter para nome
@@ -51,21 +56,14 @@ class Animal:
 
     # Getter e Setter para tamanho
     @property
-    def tamanho(self) -> str:
+    def tamanho(self) -> TamanhoAnimal:
         return self.__tamanho
 
     @tamanho.setter
-    def tamanho(self, tamanho: str):
-        if tamanho in ['pequeno', 'média', 'grande']:
+    def tamanho(self, tamanho: TamanhoAnimal):
+        if isinstance(tamanho, TamanhoAnimal):
             self.__tamanho = tamanho
 
     @property
-    def historicoVacinas(self) -> list:
-        return self.__historicoVacinas
-
-    def addVacina(self, vacina: str, data: date):
-        if isinstance(vacina, str) and isinstance(data, date):
-            self.__historicoVacinas.append((data, vacina))
-
-    def apto(self) -> bool:
-        return (all(vacina in [v for _, v in self.__historicoVacinas] for vacina in ['raiva', 'leptospirose', 'hepatite infecciosa']))
+    def carteiraVacinacao(self) -> list:
+        return self.__carteiraVacinacao

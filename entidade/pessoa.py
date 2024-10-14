@@ -1,8 +1,21 @@
 from datetime import date
+from enum import Enum
+
+
+class TipoHab(Enum):
+    casa = 1
+    apartamento = 2
+
+
+class TamanhoHab(Enum):
+    pequeno = 1
+    medio = 2
+    grande = 3
+
 
 class Pessoa:
     # Atributos: cpf, nome, data de nascimento, endereço, tipo de habitação, tamanho da habitação, número de animais
-    def __init__(self, cpf: str, nome: str, dataNasc: date, endereco: str, tipoHab: str, tamanhoHab: str, numeroAnimais: int):
+    def __init__(self, cpf: int, nome: str, dataNasc: date, endereco: str, tipoHab: TipoHab, tamanhoHab: TamanhoHab, numeroAnimais: int):
         self.__cpf = None
         self.__nome = None
         self.__dataNasc = None
@@ -10,8 +23,9 @@ class Pessoa:
         self.__tipoHab = None
         self.__tamanhoHab = None
         self.__numeroAnimais = None
+        self.__ehDoador = False
 
-        if isinstance(cpf, str):
+        if isinstance(cpf, int):
             self.__cpf = cpf
         if isinstance(nome, str):
             self.__nome = nome
@@ -19,20 +33,20 @@ class Pessoa:
             self.__dataNasc = dataNasc
         if isinstance(endereco, str):
             self.__endereco = endereco
-        if tipoHab in ['casa', 'apartamento']:
+        if isinstance(tipoHab, TipoHab):
             self.__tipoHab = tipoHab
-        if tamanhoHab in ['pequeno', 'médio', 'grande']:
+        if isinstance(tamanhoHab, TamanhoHab):
             self.__tamanhoHab = tamanhoHab
         if isinstance(numeroAnimais, int):
             self.__numeroAnimais = numeroAnimais
     
     # Getter e Setter para cpf
     @property
-    def cpf(self) -> str:
+    def cpf(self) -> int:
         return self.__cpf
 
     @cpf.setter
-    def cpf(self, cpf: str):
+    def cpf(self, cpf: int):
         if isinstance(cpf, int):
             self.__cpf = cpf
 
@@ -68,22 +82,22 @@ class Pessoa:
 
     # Getter e Setter para tipoHab
     @property
-    def tipoHab(self) -> str:
+    def tipoHab(self) -> TipoHab:
         return self.__tipoHab
 
     @tipoHab.setter
-    def tipoHab(self, tipoHab: str):
-        if tipoHab in ['casa', 'apartamento']:
+    def tipoHab(self, tipoHab: TipoHab):
+        if isinstance(tipoHab, TipoHab):
             self.__tipoHab = tipoHab
 
     # Getter e Setter para tamanhoHab
     @property
-    def tamanhoHab(self) -> str:
+    def tamanhoHab(self) -> TamanhoHab:
         return self.__tamanhoHab
 
     @tamanhoHab.setter
-    def tamanhoHab(self, tamanhoHab: str):
-        if tamanhoHab in ['pequeno', 'médio', 'grande']:
+    def tamanhoHab(self, tamanhoHab: TamanhoHab):
+        if isinstance(tamanhoHab, TamanhoHab):
             self.__tamanhoHab = tamanhoHab
 
     # Getter e Setter para numeroAnimais
@@ -96,9 +110,11 @@ class Pessoa:
         if isinstance(numeroAnimais, int):
             self.__numeroAnimais = numeroAnimais
 
-    def idade(self, data: date) -> int:
-        if isinstance(data, date):
-            idade = self.__dataNasc.year - data.year
-        if (data.month, data.day) < (self.__dataNasc.month, self.__dataNasc.day):
-            idade -= 1
-        return idade
+    @property
+    def ehDoador(self) -> bool:
+        return self.__ehDoador
+
+    @ehDoador.setter
+    def ehDoador(self, flag: bool):
+        if isinstance(flag, bool):
+            self.__ehDoador = flag
