@@ -245,17 +245,17 @@ classDiagram
 
     Vacina "many" <-* "1" ControladorVacina
     TelaVacina "1" <-* "1" ControladorVacina
-    Vacina "1" o-> "1" Animal: animal
+    Vacina "1" o-- "1" Animal: animal
 
     Doacao "many" <-* "1" ControladorDoacoes
     TelaDoacao "1" <-* "1" ControladorDoacoes
-    Doacao "1" o-> "1" Animal: animal
-    Doacao "1" o-> "1" Pessoa: doador
+    Doacao "1" o-- "1" Animal: animal
+    Doacao "1" o-- "1" Pessoa: doador
 
     Adocao "many" <-* "1" ControladorAdocoes
     TelaAdocao "1" <-* "1" ControladorAdocoes
-    Adocao "1" o-> "1" Animal: animal
-    Adocao "1" o-> "1" Pessoa: adotante
+    Adocao "1" o-- "1" Animal: animal
+    Adocao "1" o-- "1" Pessoa: adotante
 
     TelaSistema "1" <-* "1" ControladorSistema
 
