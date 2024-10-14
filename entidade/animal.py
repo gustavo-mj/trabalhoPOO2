@@ -13,7 +13,6 @@ class Animal:
         self.__nome = None
         self.__raca = None
         self.__tamanho = None
-        self.__carteiraVacinacao = []
         
         if isinstance(chip, int):
             self.__chip = chip
@@ -63,7 +62,3 @@ class Animal:
     def tamanho(self, tamanho: TamanhoAnimal):
         if isinstance(tamanho, TamanhoAnimal):
             self.__tamanho = tamanho
-
-    @property
-    def carteiraVacinacao(self) -> list:
-        return self.__carteiraVacinacao

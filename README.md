@@ -127,11 +127,13 @@ classDiagram
         + <<create>> __init__(controlador_sistema: ControladorSistema)
         +pega_vacina_por_codigo(codigo: int): Vacina
         +cadastrar_vacinacao()
+        +alterar_cadastro()
         +lista_vacinacoes()
         +lista_vacinas_por_animal(chip: int): list~str~
         +excluir_vacinacao()
         +retornar()
         +abre_tela()
+        +vacinacoes(): list~Vacina~
     }
 
     class ControladorDoacoes {
@@ -141,10 +143,12 @@ classDiagram
         + <<create>> __init__(controlador_sistema: ControladorSistema)
         +pega_doacao_por_codigo(codigo: int): Doacao
         +cadastrar_doacao()
+        +alterar_cadastro()
         +lista_doacao()
         +excluir_doacao()
         +retornar()
         +abre_tela()
+        +doacoes(): list~Doacao~
     }
 
     class ControladorAdocoes {
@@ -154,11 +158,13 @@ classDiagram
         + <<create>> __init__(controlador_sistema: ControladorSistema)
         +pega_adocao_por_codigo(codigo: int) Adocao
         +cadastrar_adocao()
+        +alterar_cadastro()
         +lista_adocao()
         +excluir_adocao()
         +listar_disponveis_para_adocao() list~dict~
         +retornar()
         +abre_tela()
+        +adocoes(): list~Adocao~
     }
 
     class ControladorSistema {
@@ -231,25 +237,25 @@ classDiagram
         +tela_opcoes(): int
     }
 
-    Pessoa "many" <-- "1" ControladorPessoa
+    Pessoa "many" <-* "1" ControladorPessoa
     TelaPessoa "1" <-* "1" ControladorPessoa
 
-    Animal "many" <-- "1" ControladorAnimal
+    Animal "many" <-* "1" ControladorAnimal
     TelaAnimal "1" <-* "1" ControladorAnimal
 
-    Vacina "many" <-- "1" ControladorVacina
+    Vacina "many" <-* "1" ControladorVacina
     TelaVacina "1" <-* "1" ControladorVacina
-    Vacina "1" --> "1" Animal: animal
+    Vacina "1" o-> "1" Animal: animal
 
     Doacao "many" <-* "1" ControladorDoacoes
     TelaDoacao "1" <-* "1" ControladorDoacoes
-    Doacao "1" --> "1" Animal: animal
-    Doacao "1" --> "1" Pessoa: doador
+    Doacao "1" o-> "1" Animal: animal
+    Doacao "1" o-> "1" Pessoa: doador
 
     Adocao "many" <-* "1" ControladorAdocoes
     TelaAdocao "1" <-* "1" ControladorAdocoes
-    Adocao "1" --> "1" Animal: animal
-    Adocao "1" --> "1" Pessoa: adotante
+    Adocao "1" o-> "1" Animal: animal
+    Adocao "1" o-> "1" Pessoa: adotante
 
     TelaSistema "1" <-* "1" ControladorSistema
 
