@@ -1,5 +1,6 @@
-from limite.tela_doacao import TelaDoacao
+from limite.tela_registros import TelaDoacao
 from entidade.doacao import Doacao
+from entidade.doador import Doador
 from random import randint
 
 

@@ -19,10 +19,15 @@ class ControladorVacina():
         self.__controlador_sistema.controlador_animais.lista_animal()
         dados_doacao = self.__tela_vacinacao.pega_dados_vacina()
 
+        #testar NoneType
         animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(dados_doacao["chip"])
         
         if (animal is not None):
-            vacina = Vacina(randint(0, 100), animal, Tipo(dados_doacao["tipo_vacinal"]), dados_doacao['data'])
+            vacina = Vacina(
+                randint(0, 100), animal,
+                Tipo(dados_doacao["tipo_vacinal"]),
+                dados_doacao['data']
+            )
             self.__vacinacoes.append(vacina)
         else:
             self.__tela_vacinacao.mostra_mensagem("Dados inválidos.")
@@ -48,15 +53,15 @@ class ControladorVacina():
                 "codigo" : v.codigo,
                 "nome_animal" : v.animal.nome,
                 "chip_animal" : v.animal.chip,
-                "tipo_vacinal" : v.tipo
+                "tipo_vacinal" : v.tipo.name
             })
 
     def lista_vacinas_por_animal(self, chip: int):
-        vacinasTomadas = []
-        for vacina in self.__vacinacoes:
-            if(vacina.animal.chip == chip):
-                vacinasTomadas.append(vacina.tipo)
-        return vacinasTomadas
+        listaVacinasAnimal = []
+        for v in self.__vacinacoes:
+            if(v.animal.chip == chip):
+                listaVacinasAnimal.append(v)
+                
 
     def excluir_vacinacao(self):
         self.lista_vacinacoes()

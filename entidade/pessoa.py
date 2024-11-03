@@ -1,44 +1,23 @@
 from datetime import date
-from enum import Enum
-
-
-class TipoHab(Enum):
-    casa = 1
-    apartamento = 2
-
-
-class TamanhoHab(Enum):
-    pequeno = 1
-    medio = 2
-    grande = 3
 
 
 class Pessoa:
-    # Atributos: cpf, nome, data de nascimento, endereço, tipo de habitação, tamanho da habitação, número de animais
-    def __init__(self, cpf: int, nome: str, dataNasc: date, endereco: str, tipoHab: TipoHab, tamanhoHab: TamanhoHab, numeroAnimais: int):
+    # Atributos: cpf, nome, data de nascimento e endereço
+    def __init__(self, cpf: int, nome: str, data_de_nascimento: date, endereco: str):
+
         self.__cpf = None
         self.__nome = None
-        self.__dataNasc = None
+        self.__data_de_nascimento = None
         self.__endereco = None
-        self.__tipoHab = None
-        self.__tamanhoHab = None
-        self.__numeroAnimais = None
-        self.__ehDoador = False
 
         if isinstance(cpf, int):
             self.__cpf = cpf
         if isinstance(nome, str):
             self.__nome = nome
-        if isinstance(dataNasc, date):
-            self.__dataNasc = dataNasc
+        if isinstance(data_de_nascimento, date):
+            self.__data_de_nascimento = data_de_nascimento
         if isinstance(endereco, str):
             self.__endereco = endereco
-        if isinstance(tipoHab, TipoHab):
-            self.__tipoHab = tipoHab
-        if isinstance(tamanhoHab, TamanhoHab):
-            self.__tamanhoHab = tamanhoHab
-        if isinstance(numeroAnimais, int):
-            self.__numeroAnimais = numeroAnimais
     
     # Getter e Setter para cpf
     @property
@@ -62,13 +41,13 @@ class Pessoa:
 
     # Getter e Setter para dataNasc
     @property
-    def dataNasc(self) -> date:
-        return self.__dataNasc
+    def data_de_nascimento(self) -> date:
+        return self.__data_de_nascimento
 
-    @dataNasc.setter
-    def dataNasc(self, dataNasc: date):
-        if isinstance(dataNasc, date):
-            self.__dataNasc = dataNasc
+    @data_de_nascimento.setter
+    def data_de_nascimento(self, data_de_nascimento: date):
+        if isinstance(data_de_nascimento, date):
+            self.__data_de_nascimento = data_de_nascimento
 
     # Getter e Setter para endereco
     @property
@@ -79,42 +58,3 @@ class Pessoa:
     def endereco(self, endereco: str):
         if isinstance(endereco, str):
             self.__endereco = endereco
-
-    # Getter e Setter para tipoHab
-    @property
-    def tipoHab(self) -> TipoHab:
-        return self.__tipoHab
-
-    @tipoHab.setter
-    def tipoHab(self, tipoHab: TipoHab):
-        if isinstance(tipoHab, TipoHab):
-            self.__tipoHab = tipoHab
-
-    # Getter e Setter para tamanhoHab
-    @property
-    def tamanhoHab(self) -> TamanhoHab:
-        return self.__tamanhoHab
-
-    @tamanhoHab.setter
-    def tamanhoHab(self, tamanhoHab: TamanhoHab):
-        if isinstance(tamanhoHab, TamanhoHab):
-            self.__tamanhoHab = tamanhoHab
-
-    # Getter e Setter para numeroAnimais
-    @property
-    def numeroAnimais(self) -> int:
-        return self.__numeroAnimais
-
-    @numeroAnimais.setter
-    def numeroAnimais(self, numeroAnimais: int):
-        if isinstance(numeroAnimais, int):
-            self.__numeroAnimais = numeroAnimais
-
-    @property
-    def ehDoador(self) -> bool:
-        return self.__ehDoador
-
-    @ehDoador.setter
-    def ehDoador(self, flag: bool):
-        if isinstance(flag, bool):
-            self.__ehDoador = flag

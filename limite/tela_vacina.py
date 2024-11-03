@@ -25,8 +25,8 @@ class TelaVacina():
     def mostra_vacinacao(self, dados_vacinacao):
         print("CODIGO DA VACINAÇÃO: ", dados_vacinacao["codigo"])
         print("NOME DO ANIMAL", dados_vacinacao["nome_animal"])
-        print("CHIP DO ANIMAL" , dados_doacao["chip_animal"])
-        print("TIPO VACINAL" , dados_doacao["tipo_vacinal"])
+        print("CHIP DO ANIMAL" , dados_vacinacao["chip_animal"])
+        print("TIPO VACINAL" , dados_vacinacao["tipo_vacinal"])
         print("\n")
 
     def seleciona_vacinacao(self):

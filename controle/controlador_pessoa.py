@@ -1,85 +1,158 @@
-from limite.tela_pessoa import TelaPessoa
-from entidade.pessoa import *
+from limite.tela_pessoas import *
+from entidade.doador import *
+from entidade.adotante import *
 
 
-class ControladorPessoa():
+class ControladorDoador():
 
     def __init__(self, controlador_sistema):
-        self.__pessoas = []
+        self.__doadores = []
         self.__controlador_sistema = controlador_sistema
-        self.__tela_pessoa = TelaPessoa()
+        self.__tela_doador = TelaDoador()
 
-    def pega_pessoa_por_cpf(self, cpf: int):
-        for pessoa in self.__pessoas:
-            if(pessoa.cpf == cpf):
-                return pessoa
+    def pega_doador_por_cpf(self, cpf: int):
+        for doador in self.__doadores:
+            if(doador.cpf == cpf):
+                return doador
         return None
 
-    def cadastrar_pessoa(self):
-        dados_pessoa = self.__tela_pessoa.pega_dados_pessoa()
-        p = self.pega_pessoa_por_cpf(dados_pessoa["cpf"])
-        if p is None:
-            pessoa = Pessoa(
-                dados_pessoa["cpf"],
-                dados_pessoa["nome"],
-                dados_pessoa["data_de_nascimento"],
-                dados_pessoa["endereco"],
-                TipoHab(dados_pessoa["tipo_de_habitacao"]),
-                TamanhoHab(dados_pessoa["tamanho_da_habitacao"]),
-                dados_pessoa["numero_de_animais"]
+    def cadastrar_doador(self):
+        dados_doador = self.__tela_doador.pega_dados_doador()
+        d = self.pega_doador_por_cpf(dados_doador["cpf"])
+        if d is None:
+            doador = Doador(
+                dados_doador["cpf"],
+                dados_doador["nome"],
+                dados_doador["data_de_nascimento"],
+                dados_doador["endereco"]
             )
-            self.__pessoas.append(pessoa)
+            self.__doadores.append(doador)
         else:
-            self.__tela_livro.mostra_mensagem("ATENÇÃO: Pessoa já cadastrada.")
+            self.__tela_doador.mostra_mensagem("ATENÇÃO: Pessoa já cadastrada.")
 
     def alterar_cadastro(self):
-        self.lista_pessoa()
-        cpf_pessoa = self.__tela_pessoa.seleciona_pessoa()
-        pessoa = self.pega_pessoa_por_cpf(cpf_pessoa)
+        self.lista_doador()
+        cpf_doador = self.__tela_doador.seleciona_doador()
+        doador = self.pega_doador_por_cpf(cpf_doador)
 
-        if(pessoa is not None):
-            novos_dados_pessoa = self.__tela_pessoa.pega_dados_pessoa()
-            pessoa.cpf = novos_dados_pessoa["cpf"]
-            pessoa.nome = novos_dados_pessoa["nome"]
-            pessoa.dataNasc = novos_dados_pessoa["data_de_nascimento"]
-            pessoa.endereco = novos_dados_pessoa["endereco"]
-            pessoa.tipoHab = TipoHab(novos_dados_pessoa["tipo_de_habitacao"])
-            pessoa.tamanhoHab = TamanhoHab(novos_dados_pessoa["tamanho_da_habitacao"])
-            pessoa.numeroAnimais = novos_dados_pessoa["numero_de_animais"]
-            self.lista_pessoa()
+        if(doador is not None):
+            novos_dados_doador = self.__tela_doador.pega_dados_doador()
+            doador.cpf = novos_dados_doador["cpf"]
+            doador.nome = novos_dados_doador["nome"]
+            doador.dataNasc = novos_dados_doador["data_de_nascimento"]
+            doador.endereco = novos_dados_doador["endereco"]
+            self.lista_doador()
         else:
-            self.__tela_pessoa.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
+            self.__tela_doador.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
 
-    def lista_pessoa(self):
-        for pessoa in self.__pessoas:
-            self.__tela_pessoa.mostra_pessoa({
-                "cpf" : pessoa.cpf,
-                "nome" : pessoa.nome,
-                "data_de_nascimento" : pessoa.dataNasc,
-                "endereco" : pessoa.endereco,
-                "tipo_de_habitacao" : pessoa.tipoHab.name,
-                "tamanho_da_habitacao" : pessoa.tamanhoHab.name,
-                "numero_de_animais" : pessoa.numeroAnimais
+    def lista_doador(self):
+        for doador in self.__doadores:
+            self.__tela_doador.mostra_doador({
+                "cpf" : doador.cpf,
+                "nome" : doador.nome,
+                "data_de_nascimento" : doador.dataNasc,
+                "endereco" : doador.endereco
             })
 
-    def excluir_pessoa(self):
-        self.lista_pessoa()
-        cpf_pessoa = self.__tela_pessoa.seleciona_pessoa()
-        pessoa = self.pega_pessoa_por_cpf(cpf_pessoa)
+    def excluir_doador(self):
+        self.lista_doador()
+        cpf_doador = self.__tela_doador.seleciona_doador()
+        doador = self.pega_doador_por_cpf(cpf_doador)
 
-        if(pessoa is not None):
-            self.__pessoas.remove(pessoa)
-            self.lista_pessoa()
+        if(doador is not None):
+            self.__doadores.remove(doador)
+            self.lista_doador()
         else:
-            self.__tela_pessoa.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
+            self.__tela_doador.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
     
     def retornar(self):
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.cadastrar_pessoa, 2: self.alterar_cadastro, 3: self.lista_pessoa, 4:self.excluir_pessoa, 0: self.retornar}
+        lista_opcoes = {1: self.cadastrar_doador, 2: self.alterar_cadastro, 3: self.lista_doador, 4:self.excluir_doador, 0: self.retornar}
 
         continua = True
         while continua:
             lista_opcoes[self.__tela_pessoa.tela_opcoes()]()
-            
+
+
+class ControladorAdotante():
+
+    def __init__(self, controlador_sistema):
+        self.__adotantes = []
+        self.__controlador_sistema = controlador_sistema
+        self.__tela_adotante = TelaAdotante()
+
+    def pega_adotante_por_cpf(self, cpf: int):
+        for adotante in self.__adotantes:
+            if(adotante.cpf == cpf):
+                return adotante
+        return None
+
+    def cadastrar_adotante(self):
+        dados_adotante = self.__tela_adotante.pega_dados_adotante()
+        a = self.pega_adotante_por_cpf(dados_adotante["cpf"])
+        if a is None:
+            adotante = Adotante(
+                dados_adotante["cpf"],
+                dados_adotante["nome"],
+                dados_adotante["data_de_nascimento"],
+                dados_adotante["endereco"],
+                TipoHab(dados_adotante["tipo_de_habitacao"]),
+                TamanhoHab(dados_adotante["tamanho_da_habitacao"]),
+                dados_adotante["numero_de_animais"]
+            )
+            self.__adotantes.append(adotante)
+        else:
+            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Pessoa já cadastrada.")
+
+    def alterar_cadastro(self):
+        self.lista_adotante()
+        cpf_adotante = self.__tela_adotante.seleciona_adotante()
+        adotante = self.pega_adotante_por_cpf(cpf_adotante)
+
+        if(adotante is not None):
+            novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
+            adotante.cpf = novos_dados_adotante["cpf"]
+            adotante.nome = novos_dados_adotante["nome"]
+            adotante.dataNasc = novos_dados_adotante["data_de_nascimento"]
+            adotante.endereco = novos_dados_adotante["endereco"]
+            adotante.tipoHab = TipoHab(novos_dados_adotante["tipo_de_habitacao"])
+            adotante.tamanhoHab = TamanhoHab(novos_dados_adotante["tamanho_da_habitacao"])
+            adotante.numeroAnimais = novos_dados_adotante["numero_de_animais"]
+            self.lista_adotante()
+        else:
+            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
+
+    def lista_adotante(self):
+        for adotante in self.__adotantes:
+            self.__tela_adotante.mostra_adotante({
+                "cpf" : adotante.cpf,
+                "nome" : adotante.nome,
+                "data_de_nascimento" : adotante.dataNasc,
+                "endereco" : adotante.endereco,
+                "tipo_de_habitacao" : adotante.tipoHab.name,
+                "tamanho_da_habitacao" : adotante.tamanhoHab.name,
+                "numero_de_animais" : adotante.numeroAnimais
+            })
+
+    def excluir_adotante(self):
+        self.lista_adotante()
+        cpf_adotante = self.__tela_adotante.seleciona_adotante()
+        adotante = self.pega_adotante_por_cpf(cpf_adotante)
+
+        if(adotante is not None):
+            self.__adotantes.remove(adotante)
+            self.lista_adotante()
+        else:
+            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
+    
+    def retornar(self):
+        self.__controlador_sistema.abre_tela()
+
+    def abre_tela(self):
+        lista_opcoes = {1: self.cadastrar_adotante, 2: self.alterar_cadastro, 3: self.lista_adotante, 4:self.excluir_adotante, 0: self.retornar}
+
+        continua = True
+        while continua:
+            lista_opcoes[self.__tela_pessoa.tela_opcoes()]()            

@@ -5,13 +5,23 @@ from entidade.animal import *
 class ControladorAnimal():
 
     def __init__(self, controlador_sistema):
-        self.__animais = []
+        self.__nao_disponveis = []
+        self.__disponiveis = []
+        self.__adotados = []
         self.__controlador_sistema = controlador_sistema
         self.__tela_animal = TelaAnimal()
 
     @property
-    def animais(self) -> list:
-        return self.__animais
+    def nao_disponveis(self) -> list:
+        return self.__nao_disponveis
+
+    @property
+    def disponiveis(self) -> list:
+        return self.__disponiveis
+
+    @property
+    def adotados(self) -> list:
+        return self.__adotados
 
     def pega_animal_por_chip(self, chip: int):
         for animal in self.__animais:

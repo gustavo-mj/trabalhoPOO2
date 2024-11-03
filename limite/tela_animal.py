@@ -1,8 +1,8 @@
 class TelaAnimal():
 
     def tela_opcoes(self):
-        print("-------- ANIMAIS ----------")
-        print("Escolha a opcao")
+        print("-------- ANIMAIS --------")
+        print("Escolha a opção:")
         print("1 - Cadastrar animal")
         print("2 - Alterar cadastro")
         print("3 - Listar cadastrados")
@@ -13,7 +13,7 @@ class TelaAnimal():
         return opcao
 
     def pega_dados_animal(self):
-        print("-------- DADOS ANIMAL ----------")
+        print("-------- DADOS DO ANIMAL --------")
         chip = int(input("Chip: "))
         nome = input("Nome: ")
         raca = input("Raça: ")
