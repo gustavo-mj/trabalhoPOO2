@@ -19,8 +19,9 @@ class ControladorVacina():
             if (animal is not None):
                 vacina = Vacina(
                     Tipo(dados_vacinacao["tipo_vacinal"]),
-                    dados_vacinacao["data"]
+                    None
                 )
+                vacina.data = dados_vacinacao["data"]
                 animal.adicionar_vacina(vacina)
                 self.atualiza_status(animal)
             else:

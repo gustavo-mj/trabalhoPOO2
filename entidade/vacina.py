@@ -1,6 +1,7 @@
 from entidade.animal import *
 from enum import Enum
 from datetime import date
+from datetime import datetime
 
 
 class Tipo(Enum):
