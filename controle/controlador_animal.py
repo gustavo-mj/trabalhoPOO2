@@ -1,27 +1,19 @@
 from limite.tela_animal import TelaAnimal
 from entidade.animal import *
+from entidade.cachorro import *
+from entidade.gato import *
 
 
 class ControladorAnimal():
 
     def __init__(self, controlador_sistema):
-        self.__nao_disponveis = []
-        self.__disponiveis = []
-        self.__adotados = []
+        self.__animais = []
         self.__controlador_sistema = controlador_sistema
         self.__tela_animal = TelaAnimal()
 
     @property
-    def nao_disponveis(self) -> list:
-        return self.__nao_disponveis
-
-    @property
-    def disponiveis(self) -> list:
-        return self.__disponiveis
-
-    @property
-    def adotados(self) -> list:
-        return self.__adotados
+    def animais(self) -> list:
+        return self.__animais
 
     def pega_animal_por_chip(self, chip: int):
         for animal in self.__animais:
@@ -29,52 +21,102 @@ class ControladorAnimal():
                 return animal
         return None
 
-    def cadastrar_animal(self):
-        dados_animal = self.__tela_animal.pega_dados_animal()
-        a = self.pega_animal_por_chip(dados_animal["chip"])
-        if a is None:
-            animal = Animal(
-                dados_animal["chip"],
-                dados_animal["nome"],
-                dados_animal["raca"],
-                TamanhoAnimal(dados_animal["tamanho"])
+    def cadastrar_cachorro(self):
+        dados_cachorro = self.__tela_animal.pega_dados_cahorro()
+        c = self.pega_animal_por_chip(dados_cachorro["chip"])
+        if c is None:
+            cachorro = Cachorro(
+                dados_cachorro["chip"],
+                dados_cachorro["nome"],
+                dados_cachorro["raca"],
+                TamanhoAnimal(dados_cachorro["tamanho"])
             )
-            self.__animais.append(animal)
+            self.__animais.append(cachorro)
         else:
-            self.__tela_livro.mostra_mensagem("ATENÇÃO: Animal já cadastrado.")
+            self.__tela_animal.mostra_mensagem("ATENÇÃO: Cachorro já cadastrado.")
+
+    def cadastrar_gato(self):
+        dados_gato = self.__tela_animal.pega_dados_gato()
+        g = self.pega_animal_por_chip(dados_gato["chip"])
+        if g is None:
+            gato = Gato(
+                dados_gato["chip"],
+                dados_gato["nome"],
+                dados_gato["raca"],
+            )
+            self.__animais.append(gato)
+        else:
+            self.__tela_animal.mostra_mensagem("ATENÇÃO: Gato já cadastrado.")
 
     def alterar_cadastro(self):
-        self.lista_animal()
+        self.lista_animais()
         chip_animal = self.__tela_animal.seleciona_animal()
         animal = self.pega_animal_por_chip(chip_animal)
 
         if(animal is not None):
-            novos_dados_animal = self.__tela_animal.pega_dados_animal()
-            animal.chip = novos_dados_animal["chip"]
-            animal.nome = novos_dados_animal["nome"]
-            animal.raca = novos_dados_animal["raca"]
-            animal.tamanho = TamanhoAnimal(novos_dados_animal["tamanho"])
-            self.lista_animal()
+            if isinstance(animal, Cachorro):
+                novos_dados_animal = self.__tela_animal.pega_dados_cahorro()
+                animal.chip = novos_dados_animal["chip"]
+                animal.nome = novos_dados_animal["nome"]
+                animal.raca = novos_dados_animal["raca"]
+                animal.tamanho = TamanhoAnimal(novos_dados_animal["tamanho"])
+            else:
+                novos_dados_animal = self.__tela_animal.pega_dados_gato()
+                animal.chip = novos_dados_animal["chip"]
+                animal.nome = novos_dados_animal["nome"]
+                animal.raca = novos_dados_animal["raca"]
         else:
             self.__tela_animal.mostra_mensagem("ATENÇÃO: Animal não cadastrado.")
 
-    def lista_animal(self):
+    def lista_animais(self):
         for animal in self.__animais:
-            self.__tela_animal.mostra_animal({
-                "chip" : animal.chip,
-                "nome" : animal.nome,
-                "raca" : animal.raca,
-                "tamanho" : animal.tamanho.name
-            })
+            if isinstance(animal, Cachorro):
+                self.__tela_animal.mostra_animal({
+                    "especie" : "cachorro",
+                    "status" : animal.status,
+                    "chip" : animal.chip,
+                    "nome" : animal.nome,
+                    "raca" : animal.raca,
+                    "tamanho" : animal.tamanho.name
+                })
+            else:
+                self.__tela_animal.mostra_animal({
+                    "especie" : "gato",
+                    "status" : animal.status,
+                    "chip" : animal.chip,
+                    "nome" : animal.nome,
+                    "raca" : animal.raca
+                })
+
+    def listar_disponveis(self):
+        for animal in self.__animais:
+            if animal.status == Status.disponivel:
+                if isinstance(animal, Cachorro):
+                    self.__tela_animal.mostra_animal({
+                        "especie" : "cachorro",
+                        "status" : animal.status,
+                        "chip" : animal.chip,
+                        "nome" : animal.nome,
+                        "raca" : animal.raca,
+                        "tamanho" : animal.tamanho.name
+                    })
+                else:
+                    self.__tela_animal.mostra_animal({
+                        "especie" : "gato",
+                        "status" : animal.status,
+                        "chip" : animal.chip,
+                        "nome" : animal.nome,
+                        "raca" : animal.raca
+                    })
 
     def excluir_animal(self):
-        self.lista_animal()
+        self.lista_animais()
         chip_animal = self.__tela_animal.seleciona_animal()
         animal = self.pega_animal_por_chip(chip_animal)
 
         if(animal is not None):
             self.__animais.remove(animal)
-            self.lista_animal()
+            self.lista_animais()
         else:
             self.__tela_animal.mostra_mensagem("ATENÇÃO: Animal não cadastrado.")
     
@@ -82,7 +124,14 @@ class ControladorAnimal():
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.cadastrar_animal, 2: self.alterar_cadastro, 3: self.lista_animal, 4: self.excluir_animal, 0: self.retornar}
+        lista_opcoes = {
+            1: self.cadastrar_cachorro,
+            2: self.cadastrar_gato,
+            3: self.alterar_cadastro,
+            4: self.lista_animais,
+            5: self.excluir_animal,
+            0: self.retornar
+        }
 
         continua = True
         while continua:

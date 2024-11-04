@@ -28,7 +28,7 @@ class ControladorDoador():
             )
             self.__doadores.append(doador)
         else:
-            self.__tela_doador.mostra_mensagem("ATENÇÃO: Pessoa já cadastrada.")
+            self.__tela_doador.mostra_mensagem("ATENÇÃO: Doador já cadastrada.")
 
     def alterar_cadastro(self):
         self.lista_doador()
@@ -43,14 +43,14 @@ class ControladorDoador():
             doador.endereco = novos_dados_doador["endereco"]
             self.lista_doador()
         else:
-            self.__tela_doador.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
+            self.__tela_doador.mostra_mensagem("ATENÇÃO: Doador não cadastrada.")
 
     def lista_doador(self):
         for doador in self.__doadores:
             self.__tela_doador.mostra_doador({
                 "cpf" : doador.cpf,
                 "nome" : doador.nome,
-                "data_de_nascimento" : doador.dataNasc,
+                "data_de_nascimento" : doador.data_de_nascimento,
                 "endereco" : doador.endereco
             })
 
@@ -63,7 +63,7 @@ class ControladorDoador():
             self.__doadores.remove(doador)
             self.lista_doador()
         else:
-            self.__tela_doador.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
+            self.__tela_doador.mostra_mensagem("ATENÇÃO: Doador não cadastrado.")
     
     def retornar(self):
         self.__controlador_sistema.abre_tela()
@@ -73,7 +73,7 @@ class ControladorDoador():
 
         continua = True
         while continua:
-            lista_opcoes[self.__tela_pessoa.tela_opcoes()]()
+            lista_opcoes[self.__tela_doador.tela_opcoes()]()
 
 
 class ControladorAdotante():
@@ -92,19 +92,29 @@ class ControladorAdotante():
     def cadastrar_adotante(self):
         dados_adotante = self.__tela_adotante.pega_dados_adotante()
         a = self.pega_adotante_por_cpf(dados_adotante["cpf"])
-        if a is None:
-            adotante = Adotante(
-                dados_adotante["cpf"],
-                dados_adotante["nome"],
-                dados_adotante["data_de_nascimento"],
-                dados_adotante["endereco"],
-                TipoHab(dados_adotante["tipo_de_habitacao"]),
-                TamanhoHab(dados_adotante["tamanho_da_habitacao"]),
-                dados_adotante["numero_de_animais"]
-            )
-            self.__adotantes.append(adotante)
+        if (a is None):
+            if (self.mais_de_18_anos(dados_adotante["data_de_nascimento"], datetime.now())):
+                adotante = Adotante(
+                    dados_adotante["cpf"],
+                    dados_adotante["nome"],
+                    dados_adotante["data_de_nascimento"],
+                    dados_adotante["endereco"],
+                    TipoHabitacao(dados_adotante["tipo_de_habitacao"]),
+                    TamanhoHabitacao(dados_adotante["tamanho_da_habitacao"]),
+                    dados_adotante["numero_de_animais"]
+                )
+                self.__adotantes.append(adotante)
+            else:
+                self.__tela_adotante.mostra_mensagem("ATENÇÃO: Adotante menor de idade.")
         else:
-            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Pessoa já cadastrada.")
+            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Adotante já cadastrado.")
+
+    def mais_de_18_anos(self, data_inicial: datetime, data_final: datetime) -> bool:
+        diferenca = data_final.year - data_inicial.year
+        if (data_final.month, data_final.day) < (data_inicial.month, data_inicial.day):
+            diferenca -= 1
+
+        return diferenca >= 18
 
     def alterar_cadastro(self):
         self.lista_adotante()
@@ -115,25 +125,25 @@ class ControladorAdotante():
             novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
             adotante.cpf = novos_dados_adotante["cpf"]
             adotante.nome = novos_dados_adotante["nome"]
-            adotante.dataNasc = novos_dados_adotante["data_de_nascimento"]
+            adotante.data_de_nascimento = novos_dados_adotante["data_de_nascimento"]
             adotante.endereco = novos_dados_adotante["endereco"]
-            adotante.tipoHab = TipoHab(novos_dados_adotante["tipo_de_habitacao"])
-            adotante.tamanhoHab = TamanhoHab(novos_dados_adotante["tamanho_da_habitacao"])
-            adotante.numeroAnimais = novos_dados_adotante["numero_de_animais"]
+            adotante.tipo_de_habitacao = TipoHabitacao(novos_dados_adotante["tipo_de_habitacao"])
+            adotante.tamanho_da_habitacao = TamanhoHabitacao(novos_dados_adotante["tamanho_da_habitacao"])
+            adotante.numero_de_animais = novos_dados_adotante["numero_de_animais"]
             self.lista_adotante()
         else:
-            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
+            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Adotante não cadastrado.")
 
     def lista_adotante(self):
         for adotante in self.__adotantes:
             self.__tela_adotante.mostra_adotante({
                 "cpf" : adotante.cpf,
                 "nome" : adotante.nome,
-                "data_de_nascimento" : adotante.dataNasc,
+                "data_de_nascimento" : adotante.data_de_nascimento,
                 "endereco" : adotante.endereco,
-                "tipo_de_habitacao" : adotante.tipoHab.name,
-                "tamanho_da_habitacao" : adotante.tamanhoHab.name,
-                "numero_de_animais" : adotante.numeroAnimais
+                "tipo_de_habitacao" : adotante.tipo_de_habitacao.name,
+                "tamanho_da_habitacao" : adotante.tamanho_da_habitacao.name,
+                "numero_de_animais" : adotante.numero_de_animais
             })
 
     def excluir_adotante(self):
@@ -145,7 +155,7 @@ class ControladorAdotante():
             self.__adotantes.remove(adotante)
             self.lista_adotante()
         else:
-            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Pessoa não cadastrada.")
+            self.__tela_adotante.mostra_mensagem("ATENÇÃO: Adotante não cadastrado.")
     
     def retornar(self):
         self.__controlador_sistema.abre_tela()
@@ -155,4 +165,4 @@ class ControladorAdotante():
 
         continua = True
         while continua:
-            lista_opcoes[self.__tela_pessoa.tela_opcoes()]()            
+            lista_opcoes[self.__tela_adotante.tela_opcoes()]()            

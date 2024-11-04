@@ -1,6 +1,6 @@
 from limite.tela_sistema import TelaSistema
 from controle.controlador_animal import ControladorAnimal
-from controle.controlador_pessoa import ControladorPessoa
+from controle.controlador_pessoa import *
 from controle.controlador_doacao import ControladorDoacoes
 from controle.controlador_adocao import ControladorAdocoes
 from controle.controlador_vacina import ControladorVacina
@@ -9,7 +9,8 @@ class ControladorSistema:
 
     def __init__(self):
         self.__controlador_animais = ControladorAnimal(self)
-        self.__controlador_pessoas = ControladorPessoa(self)
+        self.__controlador_doadores = ControladorDoador(self)
+        self.__controlador_adotantes = ControladorAdotante(self)
         self.__controlador_doacoes = ControladorDoacoes(self)
         self.__controlador_adocoes = ControladorAdocoes(self)
         self.__controlador_vacinacoes = ControladorVacina(self)
@@ -20,8 +21,12 @@ class ControladorSistema:
         return self.__controlador_animais
     
     @property
-    def controlador_pessoas(self):
-        return self.__controlador_pessoas
+    def controlador_doadores(self):
+        return self.__controlador_doadores
+
+    @property
+    def controlador_adotantes(self):
+        return self.__controlador_adotantes
 
     @property
     def controlador_doacoes(self):
@@ -41,8 +46,11 @@ class ControladorSistema:
     def cadastra_animal(self):
         self.__controlador_animais.abre_tela()
 
-    def cadastra_pessoa(self):
-        self.__controlador_pessoas.abre_tela()
+    def cadastra_doador(self):
+        self.__controlador_doadores.abre_tela()
+
+    def cadastra_adotante(self):
+        self.__controlador_adotantes.abre_tela()
 
     def cadastra_doacao(self):
         self.__controlador_doacoes.abre_tela()
@@ -59,10 +67,11 @@ class ControladorSistema:
     def abre_tela(self):
         lista_opcoes = {
             1: self.cadastra_animal,
-            2: self.cadastra_pessoa,
-            3: self.cadastra_doacao,
-            4: self.cadastra_adocao,
-            5: self.cadastra_vacinacao,
+            2: self.cadastra_doador,
+            3: self.cadastra_adotante,
+            4: self.cadastra_doacao,
+            5: self.cadastra_adocao,
+            6: self.cadastra_vacinacao,
             0: self.encerra_sistema
         }
 
