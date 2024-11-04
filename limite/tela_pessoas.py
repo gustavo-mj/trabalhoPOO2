@@ -1,7 +1,8 @@
 from datetime import datetime
 from entidade.adotante import *
+from abstract.tela_abstrata import TelaAbstrata
 
-class TelaDoador():
+class TelaDoador(TelaAbstrata):
 
     def tela_opcoes(self):
         print("-------- DOADORES --------")
@@ -55,7 +56,7 @@ class TelaDoador():
     def mostra_mensagem(self, msg):
         print(msg)
 
-class TelaAdotante():
+class TelaAdotante(TelaAbstrata):
 
     def tela_opcoes(self):
         print("-------- ADOTANTES --------")

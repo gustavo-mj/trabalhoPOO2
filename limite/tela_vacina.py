@@ -1,6 +1,7 @@
 from datetime import datetime
+from abstract.tela_abstrata import TelaAbstrata
 
-class TelaVacina():
+class TelaVacina(TelaAbstrata):
 
     def tela_opcoes(self):
         print("-------- VACINAÇÃO ----------")

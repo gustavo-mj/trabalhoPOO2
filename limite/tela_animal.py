@@ -1,6 +1,7 @@
 from entidade.cachorro import TamanhoAnimal
+from abstract.tela_abstrata import TelaAbstrata
 
-class TelaAnimal():
+class TelaAnimal(TelaAbstrata):
 
     def tela_opcoes(self):
         print("-------- ANIMAIS --------")

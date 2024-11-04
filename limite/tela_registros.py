@@ -1,8 +1,9 @@
 from datetime import date
 from datetime import datetime
+from abstract.tela_abstrata import TelaAbstrata
 
 
-class TelaDoacao:
+class TelaDoacao(TelaAbstrata):
 
     def tela_opcoes(self):
         print("-------- DOAÇÕES --------")
@@ -66,7 +67,7 @@ class TelaDoacao:
     def mostra_mensagem(self, msg):
         print(msg)
 
-class TelaAdocao():
+class TelaAdocao(TelaAbstrata):
 
     def tela_opcoes(self):
         print("-------- ADOÇÕES --------")
