@@ -10,6 +10,10 @@ class ControladorDoador():
         self.__controlador_sistema = controlador_sistema
         self.__tela_doador = TelaDoador()
 
+    @property
+    def doadores(self) -> list:
+        return self.__doadores
+
     def pega_doador_por_cpf(self, cpf: int):
         for doador in self.__doadores:
             if(doador.cpf == cpf):
@@ -39,7 +43,7 @@ class ControladorDoador():
             novos_dados_doador = self.__tela_doador.pega_dados_doador()
             doador.cpf = novos_dados_doador["cpf"]
             doador.nome = novos_dados_doador["nome"]
-            doador.dataNasc = novos_dados_doador["data_de_nascimento"]
+            doador.data_de_nascimento = novos_dados_doador["data_de_nascimento"]
             doador.endereco = novos_dados_doador["endereco"]
             self.lista_doador()
         else:
@@ -83,6 +87,10 @@ class ControladorAdotante():
         self.__controlador_sistema = controlador_sistema
         self.__tela_adotante = TelaAdotante()
 
+    @property
+    def adotantes(self) -> list:
+        return self.__adotantes
+
     def pega_adotante_por_cpf(self, cpf: int):
         for adotante in self.__adotantes:
             if(adotante.cpf == cpf):
@@ -99,8 +107,8 @@ class ControladorAdotante():
                     dados_adotante["nome"],
                     dados_adotante["data_de_nascimento"],
                     dados_adotante["endereco"],
-                    TipoHabitacao(dados_adotante["tipo_de_habitacao"]),
-                    TamanhoHabitacao(dados_adotante["tamanho_da_habitacao"]),
+                    dados_adotante["tipo_de_habitacao"],
+                    dados_adotante["tamanho_da_habitacao"],
                     dados_adotante["numero_de_animais"]
                 )
                 self.__adotantes.append(adotante)

@@ -14,15 +14,28 @@ class TelaDoacao:
         print("5 - Excluir doação")
         print("0 - Retornar")
 
-        opcao = int(input("Escolha a opção: "))
+        while True:
+            try:
+                opcao = int(input("Escolha a opção: "))
+                if opcao not in [0, 1, 2, 3, 4, 5]:
+                    raise ValueError
+                break
+            except ValueError as e:
+                print("Entrada inválida. Tente novamente.")
+
         return opcao
 
     def pega_dados_doacao(self):
         print("-------- DADOS DA DOAÇÃO --------")
-        cpf = int(input("CPF do doador: "))
-        chip = int(input("Chip do animal: "))
-        data = datetime.strptime(input("Data: "), "%d/%m/%Y").date()
-        motivo = input("Motivo: ")
+        while True:
+            try:
+                cpf = int(input("CPF do doador: "))
+                chip = int(input("Chip do animal: "))
+                data = datetime.strptime(input("Data: "), "%d/%m/%Y").date()
+                motivo = input("Motivo: ")
+                break
+            except ValueError as e:
+                print("Você inseriu um valor inválido. Tente novamente.")
 
         return {"cpf" : cpf, "chip" : chip, "data" : data, "motivo" : motivo}
 
@@ -40,8 +53,14 @@ class TelaDoacao:
         return codigo
 
     def seleciona_periodo(self):
-        inicio = datetime.strptime(input("Início: "), "%d/%m/%Y").date()
-        fim = datetime.strptime(input("Fim: "), "%d/%m/%Y").date()
+        while True:
+            try:
+                inicio = datetime.strptime(input("Início: "), "%d/%m/%Y").date()
+                fim = datetime.strptime(input("Fim: "), "%d/%m/%Y").date()
+                break
+            except ValueError as e:
+                print("Você inseriu um valor inválido. Tente novamente.")
+                
         return {"inicio" : inicio, "fim" : fim}
 
     def mostra_mensagem(self, msg):
@@ -60,14 +79,27 @@ class TelaAdocao():
         print("6 - Excluir adoção")
         print("0 - Retornar")
 
-        opcao = int(input("Escolha a opção: "))
+        while True:
+            try:
+                opcao = int(input("Escolha a opção: "))
+                if opcao not in [0, 1, 2, 3, 4, 5, 6]:
+                    raise ValueError
+                break
+            except ValueError as e:
+                print("Entrada inválida. Tente novamente.")
+
         return opcao
 
     def pega_dados_adocao(self):
         print("-------- DADOS DA ADOÇÃO --------")
-        cpf = int(input("CPF do Adotante: "))
-        chip = int(input("Chip do animal: "))
-        data = datetime.strptime(input("Data: "), "%d/%m/%Y").date()
+        while True:
+            try:
+                cpf = int(input("CPF do Adotante: "))
+                chip = int(input("Chip do animal: "))
+                data = datetime.strptime(input("Data: "), "%d/%m/%Y").date()
+                break
+            except ValueError as e:
+                print("Você inseriu um valor inválido. Tente novamente.")
 
         return {"cpf" : cpf, "chip" : chip, "data" : data}
 
@@ -85,8 +117,13 @@ class TelaAdocao():
         return codigo
     
     def seleciona_periodo(self):
-        inicio = datetime.strptime(input("Início: "), "%d/%m/%Y").date()
-        fim = datetime.strptime(input("Fim: "), "%d/%m/%Y").date()
+        while True:
+            try:
+                inicio = datetime.strptime(input("Início: "), "%d/%m/%Y").date()
+                fim = datetime.strptime(input("Fim: "), "%d/%m/%Y").date()
+                break
+            except ValueError as e:
+                print("Você inseriu um valor inválido. Tente novamente.")
         return {"inicio" : inicio, "fim" : fim}
 
     def mostra_mensagem(self, msg):

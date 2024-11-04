@@ -3,7 +3,6 @@ from entidade.animal import *
 from entidade.cachorro import *
 from entidade.gato import *
 
-
 class ControladorAnimal():
 
     def __init__(self, controlador_sistema):
@@ -29,7 +28,7 @@ class ControladorAnimal():
                 dados_cachorro["chip"],
                 dados_cachorro["nome"],
                 dados_cachorro["raca"],
-                TamanhoAnimal(dados_cachorro["tamanho"])
+                dados_cachorro["tamanho"]
             )
             self.__animais.append(cachorro)
         else:
@@ -88,7 +87,7 @@ class ControladorAnimal():
                     "raca" : animal.raca
                 })
 
-    def listar_disponveis(self):
+    def listar_disponiveis(self):
         for animal in self.__animais:
             if animal.status == Status.disponivel:
                 if isinstance(animal, Cachorro):

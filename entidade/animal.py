@@ -18,10 +18,16 @@ class Animal:
         
         if isinstance(chip, int):
             self.__chip = chip
+        else:
+            raise ExcecaoEntradaInvalida()
         if isinstance(nome, str):
             self.__nome = nome
+        else:
+            raise ExcecaoEntradaInvalida()
         if isinstance(raca, str):
             self.__raca = raca
+        else:
+            raise ExcecaoEntradaInvalida()
 
     @property
     def status(self) -> Status:
@@ -31,6 +37,8 @@ class Animal:
     def status(self, status: Status):
         if isinstance(status, Status):
             self.__status = status
+        else:
+            raise ExcecaoEntradaInvalida()
 
     # Getter e Setter para chip
     @property
@@ -41,6 +49,8 @@ class Animal:
     def chip(self, chip: int):
         if isinstance(chip, int):
             self.__chip = chip
+        else:
+            raise ExcecaoEntradaInvalida()
 
     # Getter e Setter para nome
     @property
@@ -51,6 +61,8 @@ class Animal:
     def nome(self, nome: str):
         if isinstance(nome, str):
             self.__nome = nome
+        else:
+            raise ExcecaoEntradaInvalida()
 
     # Getter e Setter para raça
     @property
@@ -61,6 +73,8 @@ class Animal:
     def raca(self, raca: str):
         if isinstance(raca, str):
             self.__raca = raca
+        else:
+            raise ExcecaoEntradaInvalida()
 
     @property
     def vacinas(self) -> list:
@@ -69,7 +83,11 @@ class Animal:
     def adicionar_vacina(self, vacina: Vacina):
         if isinstance(vacina, Vacina):
             self.__vacinas.append(vacina)
+        else:
+            raise ExcecaoEntradaInvalida()
 
     def excluir_vacina(self, vacina: Vacina):
         if isinstance(vacina, Vacina):
             self.__vacinas.remove(vacina)
+        else:
+            raise ExcecaoEntradaInvalida()

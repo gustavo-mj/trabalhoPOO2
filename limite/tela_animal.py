@@ -1,3 +1,5 @@
+from entidade.cachorro import TamanhoAnimal
+
 class TelaAnimal():
 
     def tela_opcoes(self):
@@ -10,15 +12,28 @@ class TelaAnimal():
         print("5 - Excluir cadastro")
         print("0 - Retornar")
 
-        opcao = int(input("Escolha a opção: "))
+        while True:
+            try:
+                opcao = int(input("Escolha a opção: "))
+                if opcao not in [0, 1, 2, 3, 4, 5]:
+                    raise ValueError
+                break
+            except ValueError as e:
+                print("Entrada inválida. Tente novamente.")
+
         return opcao
 
     def pega_dados_cahorro(self):
         print("-------- DADOS DO CACHORRO --------")
-        chip = int(input("Chip: "))
-        nome = input("Nome: ")
-        raca = input("Raça: ")
-        tamanho = int(input("Tamanho(1 - pequeno; 2 - médio; 3 - grande): "))
+        while True:
+            try:
+                chip = int(input("Chip: "))
+                nome = input("Nome: ")
+                raca = input("Raça: ")
+                tamanho = TamanhoAnimal(int(input("Tamanho(1 - pequeno; 2 - médio; 3 - grande): ")))
+                break
+            except ValueError as e:
+                print("Você inseriu um valor inválido. Tente novamente.")
 
         return {
             "chip": chip,
@@ -29,9 +44,14 @@ class TelaAnimal():
 
     def pega_dados_gato(self):
         print("-------- DADOS DO GATO --------")
-        chip = int(input("Chip: "))
-        nome = input("Nome: ")
-        raca = input("Raça: ")
+        while True:
+            try:
+                chip = int(input("Chip: "))
+                nome = input("Nome: ")
+                raca = input("Raça: ")
+                break
+            except ValueError as e:
+                print("Você inseriu um valor inválido. Tente novamente.")
 
         return {
             "chip": chip,

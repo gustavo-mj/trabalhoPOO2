@@ -13,6 +13,8 @@ class Cachorro(Animal):
         self.__tamanho = None
         if isinstance(tamanho, TamanhoAnimal):
             self.__tamanho = tamanho
+        else:
+            raise ExcecaoEntradaInvalida()
 
     # Getter e Setter para tamanho
     @property
@@ -23,3 +25,5 @@ class Cachorro(Animal):
     def tamanho(self, tamanho: TamanhoAnimal):
         if isinstance(tamanho, TamanhoAnimal):
             self.__tamanho = tamanho
+        else:
+            raise ExcecaoEntradaInvalida()

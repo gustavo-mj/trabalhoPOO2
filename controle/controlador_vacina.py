@@ -10,18 +10,22 @@ class ControladorVacina():
         self.__tela_vacinacao = TelaVacina()
 
     def cadastrar_vacinacao(self):
-        self.__controlador_sistema.controlador_animais.lista_animais()
-        dados_vacinacao = self.__tela_vacinacao.pega_dados_vacina()
-        animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(dados_vacinacao["chip"])
-        if (animal is not None):
-            vacina = Vacina(
-                Tipo(dados_vacinacao["tipo_vacinal"]),
-                dados_vacinacao["data"]
-            )
-            animal.adicionar_vacina(vacina)
-            self.atualiza_status(animal)
+        if not self.__controlador_sistema.controlador_animais.animais:
+            self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Não há animais cadastrados.")
         else:
-            self.__tela_vacinacao.mostra_mensagem("Dados inválidos.")
+            self.__controlador_sistema.controlador_animais.lista_animais()
+            dados_vacinacao = self.__tela_vacinacao.pega_dados_vacina()
+            animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(dados_vacinacao["chip"])
+            if (animal is not None):
+                vacina = Vacina(
+                    Tipo(dados_vacinacao["tipo_vacinal"]),
+                    dados_vacinacao["data"]
+                )
+                animal.adicionar_vacina(vacina)
+                self.atualiza_status(animal)
+            else:
+                self.__tela_vacinacao.mostra_mensagem("Dados inválidos.")
+        
 
     def atualiza_status(self, animal: Animal):
         testagem = []
@@ -33,20 +37,23 @@ class ControladorVacina():
             animal.status = Status.nao_disponivel
 
     def alterar_cadastro(self):
-        self.__controlador_sistema.controlador_animais.lista_animais()
-        chip = self.__tela_vacinacao.seleciona_animal()
-        animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(chip)
-        self.lista_vacinacoes(animal)
-        indice = self.__tela_vacinacao.seleciona_vacinacao()
-        vacina = animal.vacinas[indice-1]
-
-        if(vacina is not None):
-            novos_dados_vacina = self.__tela_vacinacao.pega_novos_dados_vacina()
-            vacina.data = novos_dados_vacina["data"]
-            vacina.tipo = Tipo(novos_dados_vacina["tipo_vacinal"])
-            self.lista_vacinacoes(animal)
+        if not self.__controlador_sistema.controlador_animais.animais:
+            self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Não há animais cadastrados.")
         else:
-            self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Vacinação não existe.")
+            self.__controlador_sistema.controlador_animais.lista_animais()
+            chip = self.__tela_vacinacao.seleciona_animal()
+            animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(chip)
+            self.lista_vacinacoes(animal)
+            indice = self.__tela_vacinacao.seleciona_vacinacao()
+            vacina = animal.vacinas[indice-1]
+
+            if(vacina is not None):
+                novos_dados_vacina = self.__tela_vacinacao.pega_novos_dados_vacina()
+                vacina.data = novos_dados_vacina["data"]
+                vacina.tipo = Tipo(novos_dados_vacina["tipo_vacinal"])
+                self.lista_vacinacoes(animal)
+            else:
+                self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Vacinação não existe.")
 
     def lista_vacinacoes(self, animal: Animal):
         indice = 0
@@ -59,25 +66,30 @@ class ControladorVacina():
             })
 
     def listagem(self):
-        self.__controlador_sistema.controlador_animais.lista_animais()
-        chip = self.__tela_vacinacao.seleciona_animal()
-        animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(chip)
-        self.lista_vacinacoes(animal)
+        if not self.__controlador_sistema.controlador_animais.animais:
+            self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Não há animais cadastrados.")
+        else:
+            self.__controlador_sistema.controlador_animais.lista_animais()
+            chip = self.__tela_vacinacao.seleciona_animal()
+            animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(chip)
+            self.lista_vacinacoes(animal)
 
     def excluir_vacinacao(self):
-        self.__controlador_sistema.controlador_animais.lista_animais()
-        chip = self.__tela_vacinacao.seleciona_animal()
-        animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(chip)
-        self.lista_vacinacoes(animal)
-        indice = self.__tela_vacinacao.seleciona_vacinacao()
-        vacina = animal.vacinas[indice-1]
-
-        if (vacina is not None):
-            animal.excluir_vacina(vacina)
-            self.atualiza_status(animal)
-            self.lista_vacinacoes(animal)
+        if not self.__controlador_sistema.controlador_animais.animais:
+            self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Não há animais cadastrados.")
         else:
-            self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: esta vacinação não existe.")
+            self.__controlador_sistema.controlador_animais.lista_animais()
+            chip = self.__tela_vacinacao.seleciona_animal()
+            animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(chip)
+            self.lista_vacinacoes(animal)
+            indice = self.__tela_vacinacao.seleciona_vacinacao()
+            vacina = animal.vacinas[indice-1]
+            if (vacina is not None):
+                animal.excluir_vacina(vacina)
+                self.atualiza_status(animal)
+                self.lista_vacinacoes(animal)
+            else:
+                self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: esta vacinação não existe.")
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()

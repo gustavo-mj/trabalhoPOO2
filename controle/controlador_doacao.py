@@ -2,6 +2,9 @@ from limite.tela_registros import TelaDoacao
 from entidade.doacao import Doacao
 from entidade.doador import Doador
 from random import randint
+from exception.lista_vazia_exception import ListaVaziaException
+from exception.dados_invalidos_exception import DadosInvalidosException
+from exception.cadastro_inexistente_exception import CadastroInexistenteException
 
 
 class ControladorDoacoes():
@@ -18,36 +21,51 @@ class ControladorDoacoes():
         return None
 
     def cadastrar_doacao(self):
-        self.__controlador_sistema.controlador_animais.lista_animais()
-        self.__controlador_sistema.controlador_doadores.lista_doador()
-        dados_doacao = self.__tela_doacao.pega_dados_doacao()
-
-        animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(dados_doacao["chip"])
-        doador = self.__controlador_sistema.controlador_doadores.pega_doador_por_cpf(dados_doacao["cpf"])
-
-        if(animal is not None and doador is not None):
-            doacao = Doacao(randint(0, 100), dados_doacao["data"], animal, doador, dados_doacao["motivo"])
-            self.__doacoes.append(doacao)
-            self.lista_doacao()
-        else:
-            self.__tela_doacao.mostra_mensagem("Dados inválidos")
+        try:
+            if not self.__controlador_sistema.controlador_animais.animais:
+                raise ListaVaziaException()
+            if not self.__controlador_sistema.controlador_doadores.doadores:
+                raise ListaVaziaException()
+            self.__controlador_sistema.controlador_animais.lista_animais()
+            self.__controlador_sistema.controlador_doadores.lista_doador()
+            dados_doacao = self.__tela_doacao.pega_dados_doacao()
+            animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(dados_doacao["chip"])
+            doador = self.__controlador_sistema.controlador_doadores.pega_doador_por_cpf(dados_doacao["cpf"])
+            if(animal is not None and doador is not None):
+                doacao = Doacao(randint(0, 100), dados_doacao["data"], animal, doador, dados_doacao["motivo"])
+                self.__doacoes.append(doacao)
+                self.lista_doacao()
+            else:
+                raise DadosInvalidosException()
+        except ListaVaziaException as e:
+            self.__tela_doacao.mostra_mensagem(e)
+        except DadosInvalidosException as e:
+            self.__tela_doacao.mostra_mensagem(e)
 
     def alterar_cadastro(self):
-        self.lista_doacao()
-        codigo_doacao = self.__tela_doacao.seleciona_doacao()
-        doacao = self.pega_doacao_por_codigo(int(codigo_doacao))
-
-        if (doacao is not None):
-            novos_dados_doacao = self.__tela_doacao.pega_dados_doacao()
-            animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(novos_dados_doacao["chip"])
-            doador = self.__controlador_sistema.controlador_doadores.pega_doador_por_cpf(novos_dados_doacao["cpf"])
-            if(animal is not None and doador is not None):
-                doacao.data = novos_dados_doacao["data"]
-                doacao.animal = animal
-                doacao.doador = doador
-                doacao.motivo = novos_dados_doacao["motivo"]
-        else:
-            self.__tela_doacao.mostra_mensagem("Dados inválidos")
+        try:
+            if not self.__doacoes:
+                raise ListaVaziaException()
+            self.lista_doacao()
+            codigo_doacao = self.__tela_doacao.seleciona_doacao()
+            doacao = self.pega_doacao_por_codigo(int(codigo_doacao))
+            if (doacao is not None):
+                novos_dados_doacao = self.__tela_doacao.pega_dados_doacao()
+                animal = self.__controlador_sistema.controlador_animais.pega_animal_por_chip(novos_dados_doacao["chip"])
+                doador = self.__controlador_sistema.controlador_doadores.pega_doador_por_cpf(novos_dados_doacao["cpf"])
+                if(animal is not None and doador is not None):
+                    doacao.data = novos_dados_doacao["data"]
+                    doacao.animal = animal
+                    doacao.doador = doador
+                    doacao.motivo = novos_dados_doacao["motivo"]
+                else:
+                    raise DadosInvalidosException()
+            else:
+                raise DadosInvalidosException()
+        except ListaVaziaException as e:
+            self.__tela_doacao.mostra_mensagem(e)
+        except DadosInvalidosException as e:
+            self.__tela_doacao.mostra_mensagem(e)
 
     def lista_doacao(self):
         for d in self.__doacoes:
@@ -61,30 +79,42 @@ class ControladorDoacoes():
             })
 
     def lista_doacoes_periodo(self):
-        dados_periodo = self.__tela_doacao.seleciona_periodo()
-        inicio = dados_periodo["inicio"]
-        fim = dados_periodo["fim"]
-        for d in self.__doacoes:
-            if (inicio <= d.data <= fim):
-                self.__tela_doacao.mostra_doacao({
-                    "codigo" : d.codigo,
-                    "nome_animal" : d.animal.nome,
-                    "chip_animal" : d.animal.chip,
-                    "nome_doador" : d.doador.nome,
-                    "cpf_doador" : d.doador.cpf,
-                    "data" : d.data
-                })
+        try:
+            if not self.__doacoes:
+                raise ListaVaziaException()
+            else:
+                dados_periodo = self.__tela_doacao.seleciona_periodo()
+                inicio = dados_periodo["inicio"]
+                fim = dados_periodo["fim"]
+                for d in self.__doacoes:
+                    if (inicio <= d.data <= fim):
+                        self.__tela_doacao.mostra_doacao({
+                            "codigo" : d.codigo,
+                            "nome_animal" : d.animal.nome,
+                            "chip_animal" : d.animal.chip,
+                            "nome_doador" : d.doador.nome,
+                            "cpf_doador" : d.doador.cpf,
+                            "data" : d.data
+                        })
+        except ListaVaziaException as e:
+            self.__tela_doacao.mostra_mensagem(e)
 
     def excluir_doacao(self):
-        self.lista_doacao()
-        codigo_doacao = self.__tela_doacao.seleciona_doacao()
-        doacao = self.pega_doacao_por_codigo(int(codigo_doacao))
-
-        if(doacao is not None):
-            self.__doacoes.remove(doacao)
+        try:
+            if not self.__doacoes:
+                raise ListaVaziaException()
             self.lista_doacao()
-        else:
-            self.__tela_doacao.mostra_mensagem("ATENÇÃO: esta doação não existe.")
+            codigo_doacao = self.__tela_doacao.seleciona_doacao()
+            doacao = self.pega_doacao_por_codigo(int(codigo_doacao))
+            if(doacao is not None):
+                self.__doacoes.remove(doacao)
+                self.lista_doacao()
+            else:
+                raise CadastroInexistenteException()
+        except ListaVaziaException as e:
+            self.__tela_doacao.mostra_mensagem(e)
+        except CadastroInexistenteException as e:
+            self.__tela_doacao.mostra_mensagem(e)
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()

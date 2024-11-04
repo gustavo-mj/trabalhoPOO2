@@ -1,4 +1,5 @@
 from datetime import datetime
+from entidade.adotante import *
 
 class TelaDoador():
 
@@ -11,20 +12,33 @@ class TelaDoador():
         print("4 - Excluir cadastro")
         print("0 - Retornar")
 
-        opcao = int(input("Escolha a opção: "))
+        while True:
+            try:
+                opcao = int(input("Escolha a opção: "))
+                if opcao not in [0, 1, 2, 3, 4]:
+                    raise ValueError
+                break
+            except ValueError as e:
+                print("Entrada inválida. Tente novamente.")
+
         return opcao
 
     def pega_dados_doador(self):
         print("-------- DADOS DO DOADOR --------")
-        cpf = int(input("CPF: "))
-        nome = input("Nome completo: ")
-        dataNasc = datetime.strptime(input("Data de nascimento(dd/mm/aaaa): "), "%d/%m/%Y").date()
-        endereco = input("Endereço: ")
+        while True:
+            try:
+                cpf = int(input("CPF: "))
+                nome = input("Nome completo: ")
+                data_de_nascimento = datetime.strptime(input("Data de nascimento(dd/mm/aaaa): "), "%d/%m/%Y").date()
+                endereco = input("Endereço: ")
+                break
+            except ValueError as e:
+                print("Você inseriu um valor inválido. Tente novamente.")
 
         return {
             "cpf": cpf,
             "nome": nome,
-            "data_de_nascimento" : dataNasc,
+            "data_de_nascimento" : data_de_nascimento,
             "endereco" : endereco}
 
     def mostra_doador(self, dados_doador):
@@ -52,27 +66,40 @@ class TelaAdotante():
         print("4 - Excluir cadastro")
         print("0 - Retornar")
 
-        opcao = int(input("Escolha a opção: "))
+        while True:
+            try:
+                opcao = int(input("Escolha a opção: "))
+                if opcao not in [0, 1, 2, 3, 4]:
+                    raise ValueError
+                break
+            except ValueError as e:
+                print("Entrada inválida. Tente novamente.")
+
         return opcao
 
     def pega_dados_adotante(self):
         print("-------- DADOS DO ADOTANTE --------")
-        cpf = int(input("CPF: "))
-        nome = input("Nome completo: ")
-        dataNasc = datetime.strptime(input("Data de nascimento(dd/mm/aaaa): "), "%d/%m/%Y").date()
-        endereco = input("Endereço: ")
-        tipoHab = int(input("Tipo de habitação(1 - casa; 2- apartamento): "))
-        tamanhoHab = int(input("Tamanho da habitação(1 - pequeno; 2 - médio; 3 - grande): "))
-        numeroAnimais = int(input("Número de animais: "))
+        while True:
+            try:
+                cpf = int(input("CPF: "))
+                nome = input("Nome completo: ")
+                data_de_nascimento = datetime.strptime(input("Data de nascimento(dd/mm/aaaa): "), "%d/%m/%Y").date()
+                endereco = input("Endereço: ")
+                tipo_de_habitacao = TipoHabitacao(int(input("Tipo de habitação(1 - casa; 2- apartamento): ")))
+                tamanho_da_habitacao = TamanhoHabitacao(int(input("Tamanho da habitação(1 - pequeno; 2 - médio; 3 - grande): ")))
+                numero_de_animais = int(input("Número de animais: "))
+                break
+            except ValueError as e:
+                print("Você inseriu um valor inválido. Tente novamente.")
 
         return {
             "cpf": cpf,
             "nome": nome,
-            "data_de_nascimento" : dataNasc,
+            "data_de_nascimento" : data_de_nascimento,
             "endereco" : endereco,
-            "tipo_de_habitacao" : tipoHab,
-            "tamanho_da_habitacao" : tamanhoHab,
-            "numero_de_animais" : numeroAnimais}
+            "tipo_de_habitacao" : tipo_de_habitacao,
+            "tamanho_da_habitacao" : tamanho_da_habitacao,
+            "numero_de_animais" : numero_de_animais}
 
     def mostra_adotante(self, dados_pessoa):
         print("CPF: ", dados_pessoa["cpf"])
