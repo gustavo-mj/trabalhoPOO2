@@ -57,14 +57,16 @@ class ControladorVacina():
                 self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Vacinação não existe.")
 
     def lista_vacinacoes(self, animal: Animal):
+        dados_vacinacao = []
         indice = 0
         for v in animal.vacinas:
             indice += 1
-            self.__tela_vacinacao.mostra_vacinacao({
+            dados_vacinacao.append({
                 "indice" : indice,
                 "tipo_vacinal" : v.tipo.name,
                 "data" : v.data
             })
+        self.__tela_vacinacao.mostra_vacinacao(dados_vacinacao)
 
     def listagem(self):
         if not self.__controlador_sistema.controlador_animais.animais:
