@@ -1,8 +1,13 @@
 from entidade.cachorro import TamanhoAnimal
 from abstract.tela_abstrata import TelaAbstrata
+import PySimpleGUI as sg
+from exception.dados_invalidos_exception import DadosInvalidosException
 
 class TelaAnimal(TelaAbstrata):
 
+    def __init__(self):
+        pass
+    
     def tela_opcoes(self):
         print("-------- ANIMAIS --------")
         print("Escolha a opção:")
@@ -44,6 +49,28 @@ class TelaAnimal(TelaAbstrata):
         }
 
     def pega_dados_gato(self):
+        layout = [
+        [sg.Text('Insira chip, nome e raça:')],
+        [sg.Text('Chip', size=(15, 1)), sg.InputText('chip',
+        key='chip')],
+        [sg.Text('Nome', size=(15, 1)), sg.InputText('nome',
+        key='nome')],
+        [sg.Text('Raça', size=(15, 1)), sg.InputText('raca',
+        key='raca')],
+        [sg.Submit(), sg.Cancel()]
+        ]
+        window = sg.Window('Dados do Gato').Layout(layout)
+        while True:
+            button, values = window.Read()
+            try:
+                values["chip"] = int(values["chip"])
+                break
+            except ValueError as e:
+                print("Dados inválidos.")
+        window.close()
+        return values
+
+        """"
         print("-------- DADOS DO GATO --------")
         while True:
             try:
@@ -59,6 +86,7 @@ class TelaAnimal(TelaAbstrata):
             "nome": nome,
             "raca" : raca
         }
+        """
 
     def mostra_animal(self, dados_animal):
         print("ESPÉCIE: ", dados_animal["especie"])

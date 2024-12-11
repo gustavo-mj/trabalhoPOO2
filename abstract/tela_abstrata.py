@@ -5,7 +5,3 @@ class TelaAbstrata(ABC):
     @abstractmethod
     def tela_opcoes(self):
         pass
-
-    @abstractmethod
-    def mostra_mensagem(self):
-        pass

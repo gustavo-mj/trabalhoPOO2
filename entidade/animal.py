@@ -1,4 +1,5 @@
 from entidade.vacina import *
+from exception.dados_invalidos_exception import *
 
 
 class Status(Enum):
@@ -19,15 +20,15 @@ class Animal:
         if isinstance(chip, int):
             self.__chip = chip
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()
         if isinstance(nome, str):
             self.__nome = nome
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()
         if isinstance(raca, str):
             self.__raca = raca
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()
 
     @property
     def status(self) -> Status:
@@ -38,7 +39,7 @@ class Animal:
         if isinstance(status, Status):
             self.__status = status
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()
 
     # Getter e Setter para chip
     @property
@@ -50,7 +51,7 @@ class Animal:
         if isinstance(chip, int):
             self.__chip = chip
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()
 
     # Getter e Setter para nome
     @property
@@ -62,7 +63,7 @@ class Animal:
         if isinstance(nome, str):
             self.__nome = nome
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()
 
     # Getter e Setter para raça
     @property
@@ -74,7 +75,7 @@ class Animal:
         if isinstance(raca, str):
             self.__raca = raca
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()
 
     @property
     def vacinas(self) -> list:
@@ -84,10 +85,10 @@ class Animal:
         if isinstance(vacina, Vacina):
             self.__vacinas.append(vacina)
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()
 
     def excluir_vacina(self, vacina: Vacina):
         if isinstance(vacina, Vacina):
             self.__vacinas.remove(vacina)
         else:
-            raise ExcecaoEntradaInvalida()
+            raise DadosInvalidosException()

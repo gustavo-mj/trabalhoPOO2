@@ -32,7 +32,7 @@ class ControladorDoador():
             )
             self.__doadores.append(doador)
         else:
-            self.__tela_doador.mostra_mensagem("ATENÇÃO: Doador já cadastrada.")
+            self.__tela_doador.mostra_mensagem("ATENÇÃO: Doador já cadastrado.")
 
     def alterar_cadastro(self):
         self.lista_doador()
@@ -50,13 +50,15 @@ class ControladorDoador():
             self.__tela_doador.mostra_mensagem("ATENÇÃO: Doador não cadastrada.")
 
     def lista_doador(self):
+        dados_doador = []
         for doador in self.__doadores:
-            self.__tela_doador.mostra_doador({
+            dados_doador.append({
                 "cpf" : doador.cpf,
                 "nome" : doador.nome,
                 "data_de_nascimento" : doador.data_de_nascimento,
                 "endereco" : doador.endereco
             })
+        self.__tela_doador.mostra_doador(dados_doador)
 
     def excluir_doador(self):
         self.lista_doador()
@@ -143,8 +145,9 @@ class ControladorAdotante():
             self.__tela_adotante.mostra_mensagem("ATENÇÃO: Adotante não cadastrado.")
 
     def lista_adotante(self):
+        dados_adotante = []
         for adotante in self.__adotantes:
-            self.__tela_adotante.mostra_adotante({
+            dados_adotante.append({
                 "cpf" : adotante.cpf,
                 "nome" : adotante.nome,
                 "data_de_nascimento" : adotante.data_de_nascimento,
@@ -153,6 +156,7 @@ class ControladorAdotante():
                 "tamanho_da_habitacao" : adotante.tamanho_da_habitacao.name,
                 "numero_de_animais" : adotante.numero_de_animais
             })
+        self.__tela_adotante.mostra_adotante(dados_adotante)
 
     def excluir_adotante(self):
         self.lista_adotante()
