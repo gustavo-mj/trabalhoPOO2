@@ -68,8 +68,9 @@ class ControladorDoacoes():
             self.__tela_doacao.mostra_mensagem(e)
 
     def lista_doacao(self):
+        dados_doacao = []
         for d in self.__doacoes:
-            self.__tela_doacao.mostra_doacao({
+            dados_doacao.append({
                 "codigo" : d.codigo,
                 "nome_animal" : d.animal.nome,
                 "chip_animal" : d.animal.chip,
@@ -77,6 +78,7 @@ class ControladorDoacoes():
                 "cpf_doador" : d.doador.cpf,
                 "data" : d.data
             })
+            self.__tela_doacao.mostra_doacao(dados_doacao)
 
     def lista_doacoes_periodo(self):
         try:

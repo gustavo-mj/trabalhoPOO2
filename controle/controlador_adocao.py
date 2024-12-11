@@ -80,8 +80,9 @@ class ControladorAdocoes():
             self.__tela_adocao.mostra_mensagem(e)
 
     def lista_adocao(self):
+        dados_adocao = []
         for a in self.__adocoes:
-            self.__tela_adocao.mostra_adocao({
+            dados_adocao.append({
                 "codigo" : a.codigo,
                 "nome_animal" : a.animal.nome,
                 "chip_animal" : a.animal.chip,
@@ -89,6 +90,7 @@ class ControladorAdocoes():
                 "cpf_adotante" : a.adotante.cpf,
                 "data" : a.data
             })
+            self.__tela_adocao.mostra_adocao(dados_adocao)
 
     def lista_adocao_periodo(self):
         try:
@@ -98,9 +100,10 @@ class ControladorAdocoes():
                 dados_periodo = self.__tela_adocao.seleciona_periodo()
                 inicio = dados_periodo["inicio"]
                 fim = dados_periodo["fim"]
+                dados_adocao = []
                 for a in self.__adocoes:
                     if (inicio <= a.data <= fim):
-                        self.__tela_doacao.mostra_doacao({
+                        dados_adocao.append({
                             "codigo" : a.codigo,
                             "nome_animal" : a.animal.nome,
                             "chip_animal" : a.animal.chip,
@@ -108,6 +111,7 @@ class ControladorAdocoes():
                             "cpf_doador" : a.doador.cpf,
                             "data" : a.data
                         })
+                self.__tela_adocao.mostra_adocao(dados_adocao)
         except ListaVaziaException as e:
             self.__tela_adocao.mostra_mensagem(e)
 
