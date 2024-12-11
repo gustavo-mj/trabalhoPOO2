@@ -68,24 +68,26 @@ class ControladorAnimal():
             self.__tela_animal.mostra_mensagem("ATENÇÃO: Animal não cadastrado.")
 
     def lista_animais(self):
+        dados_animal = []
         for animal in self.__animais:
             if isinstance(animal, Cachorro):
-                self.__tela_animal.mostra_animal({
+                dados_animal.append({
                     "especie" : "cachorro",
-                    "status" : animal.status,
+                    "status" : animal.status.name,
                     "chip" : animal.chip,
                     "nome" : animal.nome,
                     "raca" : animal.raca,
                     "tamanho" : animal.tamanho.name
                 })
             else:
-                self.__tela_animal.mostra_animal({
+                dados_animal.append({
                     "especie" : "gato",
-                    "status" : animal.status,
+                    "status" : animal.status.name,
                     "chip" : animal.chip,
                     "nome" : animal.nome,
                     "raca" : animal.raca
                 })
+        self.__tela_animal.mostra_animal(dados_animal)
 
     def listar_disponiveis(self):
         for animal in self.__animais:
