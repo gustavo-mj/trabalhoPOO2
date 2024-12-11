@@ -6,7 +6,7 @@ from controle.controlador_adocao import ControladorAdocoes
 from controle.controlador_vacina import ControladorVacina
 
 class ControladorSistema:
-
+    __instance = None
     def __init__(self):
         self.__controlador_animais = ControladorAnimal(self)
         self.__controlador_doadores = ControladorDoador(self)
@@ -16,6 +16,11 @@ class ControladorSistema:
         self.__controlador_vacinacoes = ControladorVacina(self)
         self.__tela_sistema = TelaSistema()
     
+    def __new__(cls):
+        if ControladorSistema.__instance is None:
+            ControladorSistema.__instance = object.__new__(cls)
+        return ControladorSistema.__instance
+
     @property
     def controlador_animais(self):
         return self.__controlador_animais
