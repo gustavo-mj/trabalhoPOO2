@@ -24,6 +24,7 @@ class ControladorVacina():
                 vacina.data = dados_vacinacao["data"]
                 animal.adicionar_vacina(vacina)
                 self.atualiza_status(animal)
+                self.__controlador_sistema.controlador_animais.update_remoto(animal) #atualiza animal
             else:
                 self.__tela_vacinacao.mostra_mensagem("Dados inválidos.")
         
@@ -52,6 +53,7 @@ class ControladorVacina():
                 novos_dados_vacina = self.__tela_vacinacao.pega_novos_dados_vacina()
                 vacina.data = novos_dados_vacina["data"]
                 vacina.tipo = Tipo(novos_dados_vacina["tipo_vacinal"])
+                self.__controlador_sistema.controlador_animais.update_remoto(animal) #atualiza animal
                 self.lista_vacinacoes(animal)
             else:
                 self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: Vacinação não existe.")
@@ -90,6 +92,7 @@ class ControladorVacina():
             if (vacina is not None):
                 animal.excluir_vacina(vacina)
                 self.atualiza_status(animal)
+                self.__controlador_sistema.controlador_animais.update_remoto(animal) #atualiza animal
                 self.lista_vacinacoes(animal)
             else:
                 self.__tela_vacinacao.mostra_mensagem("ATENÇÃO: esta vacinação não existe.")

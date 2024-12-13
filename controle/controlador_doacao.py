@@ -5,17 +5,21 @@ from random import randint
 from exception.lista_vazia_exception import ListaVaziaException
 from exception.dados_invalidos_exception import DadosInvalidosException
 from exception.cadastro_inexistente_exception import CadastroInexistenteException
+from DAOs.doacao_dao import DoacaoDAO
 
 
 class ControladorDoacoes():
 
     def __init__(self, controlador_sistema):
+        #self.__doacoes = []
+        self.__doacao_DAO = DoacaoDAO()
         self.__controlador_sistema = controlador_sistema
-        self.__doacoes = []
         self.__tela_doacao = TelaDoacao()
 
     def pega_doacao_por_codigo(self, codigo: int):
-        for doacao in self.__doacoes:
+        #for doacao in self.__doacoes:
+        for doacao in self.__doacao_DAO.get_all():
+            print(doacao.codigo)
             if(doacao.codigo == codigo):
                 return doacao
         return None
@@ -33,7 +37,8 @@ class ControladorDoacoes():
             doador = self.__controlador_sistema.controlador_doadores.pega_doador_por_cpf(dados_doacao["cpf"])
             if(animal is not None and doador is not None):
                 doacao = Doacao(randint(0, 100), dados_doacao["data"], animal, doador, dados_doacao["motivo"])
-                self.__doacoes.append(doacao)
+                #self.__doacoes.append(doacao)
+                self.__doacao_DAO.add(doacao)
                 self.lista_doacao()
             else:
                 raise DadosInvalidosException()
@@ -44,7 +49,8 @@ class ControladorDoacoes():
 
     def alterar_cadastro(self):
         try:
-            if not self.__doacoes:
+            #if not self.__doacoes:
+            if not self.__doacao_DAO.get_all():
                 raise ListaVaziaException()
             self.lista_doacao()
             codigo_doacao = self.__tela_doacao.seleciona_doacao()
@@ -58,6 +64,8 @@ class ControladorDoacoes():
                     doacao.animal = animal
                     doacao.doador = doador
                     doacao.motivo = novos_dados_doacao["motivo"]
+                    self.__doacao_DAO.update(doacao)
+                    self.lista_doacao()
                 else:
                     raise DadosInvalidosException()
             else:
@@ -69,7 +77,8 @@ class ControladorDoacoes():
 
     def lista_doacao(self):
         dados_doacao = []
-        for d in self.__doacoes:
+        #for d in self.__doacoes:
+        for d in self.__doacao_DAO.get_all():
             dados_doacao.append({
                 "codigo" : d.codigo,
                 "nome_animal" : d.animal.nome,
@@ -82,13 +91,15 @@ class ControladorDoacoes():
 
     def lista_doacoes_periodo(self):
         try:
-            if not self.__doacoes:
+            #if not self.__doacoes:
+            if not self.__doacao_DAO.get_all():
                 raise ListaVaziaException()
             else:
                 dados_periodo = self.__tela_doacao.seleciona_periodo()
                 inicio = dados_periodo["inicio"]
                 fim = dados_periodo["fim"]
-                for d in self.__doacoes:
+                #for d in self.__doacoes:
+                for d in self.__doacao_DAO.get_all():
                     if (inicio <= d.data <= fim):
                         self.__tela_doacao.mostra_doacao({
                             "codigo" : d.codigo,
@@ -103,13 +114,15 @@ class ControladorDoacoes():
 
     def excluir_doacao(self):
         try:
-            if not self.__doacoes:
+            #if not self.__doacoes:
+            if not self.__doacao_DAO.get_all():
                 raise ListaVaziaException()
             self.lista_doacao()
             codigo_doacao = self.__tela_doacao.seleciona_doacao()
             doacao = self.pega_doacao_por_codigo(int(codigo_doacao))
             if(doacao is not None):
-                self.__doacoes.remove(doacao)
+                #self.__doacoes.remove(doacao)
+                self.__doacao_DAO.remove(doacao.codigo)
                 self.lista_doacao()
             else:
                 raise CadastroInexistenteException()

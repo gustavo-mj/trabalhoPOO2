@@ -9,17 +9,21 @@ from dateutil.relativedelta import relativedelta
 from exception.lista_vazia_exception import ListaVaziaException
 from exception.dados_invalidos_exception import DadosInvalidosException
 from exception.cadastro_inexistente_exception import CadastroInexistenteException
+from DAOs.adocao_dao import AdocaoDAO
 
 
 class ControladorAdocoes():
 
     def __init__(self, controlador_sistema):
+        #self.__adocoes = []
+        self.__adocao_DAO = AdocaoDAO()
         self.__controlador_sistema = controlador_sistema
-        self.__adocoes = []
         self.__tela_adocao = TelaAdocao()
 
     def pega_adocao_por_codigo(self, codigo: int):
-        for adocao in self.__adocoes:
+        #for adocao in self.__adocoes:
+        for adocao in self.__adocao_DAO.get_all():
+            print(adocao.codigo)
             if(adocao.codigo == codigo):
                 return adocao
         return None
@@ -41,13 +45,15 @@ class ControladorAdocoes():
                 if isinstance(animal, Cachorro):
                     if (animal.tamanho != TamanhoAnimal.grande) or (adotante.tipo_de_habitacao != TipoHabitacao.apartamento) or (adotante.tamanho_da_habitacao != TamanhoHabitacao.pequeno):
                         adocao = Adocao(randint(0, 100), data, animal, adotante, True)
-                        self.__adocoes.append(adocao)
+                        #self.__adocoes.append(adocao)
+                        self.__adocao_DAO.add(adocao)
                         animal.status = Status.adotado
                     else:
                         self.__tela_adocao.mostra_mensagem("Cachorro e habitação incompatíveis.")
                 else:
                     adocao = Adocao(randint(0, 100), data, animal, adotante, True)
-                    self.__adocoes.append(adocao)
+                    #self.__adocoes.append(adocao)
+                    self.__adocao_DAO.add(adocao)
                     animal.status = Status.adotado
             else:
                 raise DadosInvalidosException()
@@ -58,7 +64,8 @@ class ControladorAdocoes():
 
     def alterar_cadastro(self):
         try:
-            if not self.__adocoes:
+            #if not self.__adocoes:
+            if not self.__adocao_DAO.get_all():
                 raise ListaVaziaException()
             self.lista_adocao()
             codigo = self.__tela_adocao.seleciona_adocao()
@@ -72,6 +79,8 @@ class ControladorAdocoes():
                 adocao.data = novos_dados_adocao["data"]
                 adocao.animal = animal
                 adocao.adotante = adotante
+                self.__adocao_DAO.update(adocao)
+                self.lista_adocao()
             else:
                 raise CadastroInexistenteException()
         except ListaVaziaException as e:
@@ -81,7 +90,8 @@ class ControladorAdocoes():
 
     def lista_adocao(self):
         dados_adocao = []
-        for a in self.__adocoes:
+        #for a in self.__adocoes:
+        for a in self.__adocao_DAO.get_all():
             dados_adocao.append({
                 "codigo" : a.codigo,
                 "nome_animal" : a.animal.nome,
@@ -94,14 +104,16 @@ class ControladorAdocoes():
 
     def lista_adocao_periodo(self):
         try:
-            if not self.__adocoes:
+            #if not self.__adocoes:
+            if not self.__adocao_DAO.get_all():
                 raise ListaVaziaException()
             else:
                 dados_periodo = self.__tela_adocao.seleciona_periodo()
                 inicio = dados_periodo["inicio"]
                 fim = dados_periodo["fim"]
                 dados_adocao = []
-                for a in self.__adocoes:
+                #for a in self.__adocoes:
+                for a in self.__adocao_DAO.get_all():
                     if (inicio <= a.data <= fim):
                         dados_adocao.append({
                             "codigo" : a.codigo,
@@ -117,7 +129,8 @@ class ControladorAdocoes():
 
     def excluir_adocao(self):
         try:
-            if not self.__adocoes:
+            #if not self.__adocoes:
+            if not self.__adocao_DAO.get_all():
                 raise ListaVaziaException()
             else:
                 self.lista_adocao()
@@ -125,7 +138,7 @@ class ControladorAdocoes():
                 adocao = self.pega_adocao_por_codigo(codigo_adocao)
                 if(adocao is not None):
                     adocao.animal.status = Status.disponivel
-                    self.__adocoes.remove(adocao)
+                    self.__adocao_DAO.remove(adocao.codigo)
                     self.lista_adocao()
                 else:
                     raise CadastroInexistenteException()
