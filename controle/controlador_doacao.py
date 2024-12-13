@@ -87,9 +87,10 @@ class ControladorDoacoes():
                 "cpf_doador" : d.doador.cpf,
                 "data" : d.data
             })
-            self.__tela_doacao.mostra_doacao(dados_doacao)
+        self.__tela_doacao.mostra_doacao(dados_doacao)
 
     def lista_doacoes_periodo(self):
+        dados_doacao = []
         try:
             #if not self.__doacoes:
             if not self.__doacao_DAO.get_all():
@@ -101,7 +102,7 @@ class ControladorDoacoes():
                 #for d in self.__doacoes:
                 for d in self.__doacao_DAO.get_all():
                     if (inicio <= d.data <= fim):
-                        self.__tela_doacao.mostra_doacao({
+                        dados_doacao.append({
                             "codigo" : d.codigo,
                             "nome_animal" : d.animal.nome,
                             "chip_animal" : d.animal.chip,
@@ -109,6 +110,7 @@ class ControladorDoacoes():
                             "cpf_doador" : d.doador.cpf,
                             "data" : d.data
                         })
+                self.__tela_doacao.mostra_doacao(dados_doacao)
         except ListaVaziaException as e:
             self.__tela_doacao.mostra_mensagem(e)
 

@@ -12,12 +12,6 @@ class ControladorAnimal():
         self.__controlador_sistema = controlador_sistema
         self.__tela_animal = TelaAnimal()
 
-    '''
-    @property
-    def animais(self) -> list:
-        return self.__animais
-    '''
-
     @property
     def animais(self):
         return self.__animal_DAO.get_all()
@@ -34,7 +28,7 @@ class ControladorAnimal():
         return None
 
     def cadastrar_cachorro(self):
-        dados_cachorro = self.__tela_animal.pega_dados_cahorro()
+        dados_cachorro = self.__tela_animal.pega_dados_cachorro()
         c = self.pega_animal_por_chip(dados_cachorro["chip"])
         if c is None:
             cachorro = Cachorro(
@@ -66,17 +60,14 @@ class ControladorAnimal():
         self.lista_animais()
         chip_animal = self.__tela_animal.seleciona_animal()
         animal = self.pega_animal_por_chip(chip_animal)
-
         if(animal is not None):
             if isinstance(animal, Cachorro):
-                novos_dados_animal = self.__tela_animal.pega_dados_cahorro()
-                animal.chip = novos_dados_animal["chip"] #Não alterar!!!!!
+                novos_dados_animal = self.__tela_animal.pega_dados_cachorro_alteracao()
                 animal.nome = novos_dados_animal["nome"]
                 animal.raca = novos_dados_animal["raca"]
                 animal.tamanho = TamanhoAnimal(novos_dados_animal["tamanho"])
             else:
-                novos_dados_animal = self.__tela_animal.pega_dados_gato()
-                animal.chip = novos_dados_animal["chip"] #Não alterar!!!!!
+                novos_dados_animal = self.__tela_animal.pega_dados_gato_alteracao()
                 animal.nome = novos_dados_animal["nome"]
                 animal.raca = novos_dados_animal["raca"]
             self.__animal_DAO.update(animal)
@@ -108,26 +99,28 @@ class ControladorAnimal():
         self.__tela_animal.mostra_animal(dados_animal)
 
     def listar_disponiveis(self):
+        dados_animal = []
         #for animal in self.__animais:
         for animal in self.__animal_DAO.get_all():
             if animal.status == Status.disponivel:
                 if isinstance(animal, Cachorro):
-                    self.__tela_animal.mostra_animal({
+                    dados_animal.append({
                         "especie" : "cachorro",
-                        "status" : animal.status,
+                        "status" : animal.status.name,
                         "chip" : animal.chip,
                         "nome" : animal.nome,
                         "raca" : animal.raca,
                         "tamanho" : animal.tamanho.name
                     })
                 else:
-                    self.__tela_animal.mostra_animal({
+                    dados_animal.append({
                         "especie" : "gato",
-                        "status" : animal.status,
+                        "status" : animal.status.name,
                         "chip" : animal.chip,
                         "nome" : animal.nome,
                         "raca" : animal.raca
                     })
+        self.__tela_animal.mostra_animal(dados_animal)
 
     def excluir_animal(self):
         self.lista_animais()

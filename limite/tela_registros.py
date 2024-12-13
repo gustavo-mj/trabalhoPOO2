@@ -181,11 +181,12 @@ class TelaAdocao(TelaAbstrata):
         layout = [
             [sg.Text('-------- ADOÇÕES ----------', font=("Helvica", 25))],
             [sg.Text('Escolha sua opção', font=("Helvica", 15))],
-            [sg.Radio('Cadastrar', "RD1", key='1')],
-            [sg.Radio('Alterar', "RD1", key='2')],
-            [sg.Radio('Listar adoções', "RD1", key='3')],
-            [sg.Radio('Listar adoções num período', "RD1", key='4')],
-            [sg.Radio('Excluir', "RD1", key='5')],
+            [sg.Radio('Listar disponíveis', "RD1", key='1')],
+            [sg.Radio('Cadastrar', "RD1", key='2')],
+            [sg.Radio('Alterar', "RD1", key='3')],
+            [sg.Radio('Listar adoções', "RD1", key='4')],
+            [sg.Radio('Listar adoções num período', "RD1", key='5')],
+            [sg.Radio('Excluir', "RD1", key='6')],
             [sg.Radio('Retornar', "RD1", key='0')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]]
         self.__window = sg.Window('Sistema da ONG de pets').Layout(layout)
@@ -200,6 +201,8 @@ class TelaAdocao(TelaAbstrata):
             opcao = 4
         if values['5']:
             opcao = 5
+        if values['6']:
+            opcao = 6
         if values['0'] or button in (None, 'Cancelar'):
             opcao = 0
         self.__window.Close()

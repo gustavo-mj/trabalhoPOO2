@@ -13,12 +13,6 @@ class ControladorDoador():
         self.__controlador_sistema = controlador_sistema
         self.__tela_doador = TelaDoador()
 
-    '''
-    @property
-    def doadores(self) -> list:
-        return self.__doadores
-    '''
-
     @property
     def doadores(self):
         return self.__doador_DAO.get_all()
@@ -52,8 +46,7 @@ class ControladorDoador():
         doador = self.pega_doador_por_cpf(cpf_doador)
 
         if(doador is not None):
-            novos_dados_doador = self.__tela_doador.pega_dados_doador()
-            doador.cpf = novos_dados_doador["cpf"] #não deve ser alterado!!!!!!!!
+            novos_dados_doador = self.__tela_doador.pega_dados_doador_alteracao()
             doador.nome = novos_dados_doador["nome"]
             doador.data_de_nascimento = novos_dados_doador["data_de_nascimento"]
             doador.endereco = novos_dados_doador["endereco"]
@@ -105,12 +98,6 @@ class ControladorAdotante():
         self.__controlador_sistema = controlador_sistema
         self.__tela_adotante = TelaAdotante()
 
-    '''
-    @property
-    def adotantes(self) -> list:
-        return self.__adotantes
-    '''
-
     @property
     def adotantes(self):
         return self.__adotante_DAO.get_all()
@@ -157,8 +144,7 @@ class ControladorAdotante():
         adotante = self.pega_adotante_por_cpf(cpf_adotante)
 
         if(adotante is not None):
-            novos_dados_adotante = self.__tela_adotante.pega_dados_adotante()
-            adotante.cpf = novos_dados_adotante["cpf"] #Não deve ser alterado!!!!!!
+            novos_dados_adotante = self.__tela_adotante.pega_dados_adotante_alteracao()
             adotante.nome = novos_dados_adotante["nome"]
             adotante.data_de_nascimento = novos_dados_adotante["data_de_nascimento"]
             adotante.endereco = novos_dados_adotante["endereco"]

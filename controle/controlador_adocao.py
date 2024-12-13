@@ -100,9 +100,10 @@ class ControladorAdocoes():
                 "cpf_adotante" : a.adotante.cpf,
                 "data" : a.data
             })
-            self.__tela_adocao.mostra_adocao(dados_adocao)
+        self.__tela_adocao.mostra_adocao(dados_adocao)
 
     def lista_adocao_periodo(self):
+        dados_adocao = []
         try:
             #if not self.__adocoes:
             if not self.__adocao_DAO.get_all():
@@ -111,7 +112,6 @@ class ControladorAdocoes():
                 dados_periodo = self.__tela_adocao.seleciona_periodo()
                 inicio = dados_periodo["inicio"]
                 fim = dados_periodo["fim"]
-                dados_adocao = []
                 #for a in self.__adocoes:
                 for a in self.__adocao_DAO.get_all():
                     if (inicio <= a.data <= fim):
@@ -119,8 +119,8 @@ class ControladorAdocoes():
                             "codigo" : a.codigo,
                             "nome_animal" : a.animal.nome,
                             "chip_animal" : a.animal.chip,
-                            "nome_doador" : a.doador.nome,
-                            "cpf_doador" : a.doador.cpf,
+                            "nome_doador" : a.adotante.nome,
+                            "cpf_doador" : a.adotante.cpf,
                             "data" : a.data
                         })
                 self.__tela_adocao.mostra_adocao(dados_adocao)

@@ -37,42 +37,7 @@ class TelaAnimal(TelaAbstrata):
         self.__window.Close()
         return opcao
 
-        '''
-        print("-------- ANIMAIS --------")
-        print("Escolha a opção:")
-        print("1 - Cadastrar cachorro")
-        print("2 - Cadastrar gato")
-        print("3 - Alterar cadastro")
-        print("4 - Listar cadastrados")
-        print("5 - Excluir cadastro")
-        print("0 - Retornar")
-
-        while True:
-            try:
-                opcao = int(input("Escolha a opção: "))
-                if opcao not in [0, 1, 2, 3, 4, 5]:
-                    raise ValueError
-                break
-            except ValueError as e:
-                print("Entrada inválida. Tente novamente.")
-
-        return opcao
-        '''
-
-    def pega_dados_cahorro(self):
-        '''
-        print("-------- DADOS DO CACHORRO --------")
-        while True:
-            try:
-                chip = int(input("Chip: "))
-                nome = input("Nome: ")
-                raca = input("Raça: ")
-                tamanho = TamanhoAnimal(int(input("Tamanho(1 - pequeno; 2 - médio; 3 - grande): ")))
-                break
-            except ValueError as e:
-                print("Você inseriu um valor inválido. Tente novamente.")
-        '''
-
+    def pega_dados_cachorro(self):
         layout = [
             [sg.Text('-------- DADOS CACHORRO ----------', font=("Helvica", 25))],
             [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
@@ -111,6 +76,42 @@ class TelaAnimal(TelaAbstrata):
             "tamanho" : tamanho
         }
 
+    def pega_dados_cachorro_alteracao(self):
+        layout = [
+            [sg.Text('-------- DADOS DE ALTERAÇÃO CACHORRO ----------', font=("Helvica", 25))],
+            [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
+            [sg.Text('Raça:', size=(15, 1)), sg.InputText('', key='raca')],
+            [sg.Frame(layout=[
+                [sg.Radio('Pequeno', "TAMANHO", key='pequeno', default=True, size=(10,1)), sg.Radio('Médio', "TAMANHO", key='médio'), sg.Radio('Grande', "TAMANHO", key='grande')]],
+                title='Tamanho do cachorro',
+                title_color='red',
+                relief=sg.RELIEF_SUNKEN,
+                tooltip='Use these to set flags')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            ]
+
+        self.__window = sg.Window('Sistema da ONG de pets').Layout(layout)
+
+        button, values = self.__window.Read()
+        nome = values['nome']
+        raca = values['raca']
+        if values['pequeno']:
+            tamanho = TamanhoAnimal.pequeno
+        elif values['médio']:
+            tamanho = TamanhoAnimal.medio
+        elif values['grande']:
+            tamanho = TamanhoAnimal.grande
+        else:
+            tamanho = None
+
+        self.__window.Close()
+
+        return {
+            "nome": nome,
+            "raca" : raca,
+            "tamanho" : tamanho
+        }
+
     def pega_dados_gato(self):
         layout = [
             [sg.Text('-------- DADOS GATO ----------', font=("Helvica", 25))],
@@ -128,38 +129,33 @@ class TelaAnimal(TelaAbstrata):
 
         self.__window.Close()
 
-        """"
-        print("-------- DADOS DO GATO --------")
-        while True:
-            try:
-                chip = int(input("Chip: "))
-                nome = input("Nome: ")
-                raca = input("Raça: ")
-                break
-            except ValueError as e:
-                print("Você inseriu um valor inválido. Tente novamente.")
-
-        """
-
         return {
             "chip": chip,
             "nome": nome,
             "raca" : raca
         }
 
+    def pega_dados_gato_alteracao(self):
+        layout = [
+            [sg.Text('-------- DADOS DE ALTERAÇÃO GATO ----------', font=("Helvica", 25))],
+            [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
+            [sg.Text('Raca:', size=(15, 1)), sg.InputText('', key='raca')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            ]
+        self.__window = sg.Window('Sistema da ONG de pets').Layout(layout)
+
+        button, values = self.__window.Read()
+        nome = values['nome']
+        raca = values['raca']
+
+        self.__window.Close()
+
+        return {
+            "nome": nome,
+            "raca" : raca
+        }
+
     def mostra_animal(self, dados_animal):
-        '''
-        print("ESPÉCIE: ", dados_animal["especie"])
-        print("STATUS", dados_animal["status"])
-        print("CHIP: ", dados_animal["chip"])
-        print("NOME: ", dados_animal["nome"])
-        print("RAÇA: ", dados_animal["raca"])
-        try:
-            print("TAMANHO: ", dados_animal["tamanho"])
-        except Exception as e:
-            pass
-        print("\n")
-        '''
         string_todos_animais = ""
         for dado in dados_animal:
             string_todos_animais = string_todos_animais + "ESPÉCIE: " + dado["especie"] + '\n'
@@ -184,13 +180,9 @@ class TelaAnimal(TelaAbstrata):
         self.__window = sg.Window('Seleciona animal').Layout(layout)
 
         button, values = self.__window.Read()
-        chip = values['chip']
+        chip = int(values['chip'])
         self.__window.Close()
         return chip
-        '''
-        chip = int(input("Código do chip do animal que deseja selecionar: "))
-        return chip
-        '''
 
     def mostra_mensagem(self, msg):
         sg.popup("", msg)

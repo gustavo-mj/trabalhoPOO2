@@ -126,7 +126,7 @@ class TelaVacina(TelaAbstrata):
             except ValueError as e:
                 print("Você inseriu um valor inválido. Tente novamente.")
         '''
-        return {"tipo_vacinal" : tipo, "data" : data}
+        return {"tipo_vacinal" : tipo_vacinal, "data" : data}
 
     def mostra_vacinacao(self, dados_vacinacao):
         string_todas_vacinacoes = ""

@@ -56,6 +56,25 @@ class TelaDoador(TelaAbstrata):
             "data_de_nascimento" : data_de_nascimento,
             "endereco" : endereco}
 
+    def pega_dados_doador_alteracao(self):
+        layout = [
+        [sg.Text('-------- DADOS DOADOR ----------', font=("Helvica", 25))],
+        [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
+        [sg.CalendarButton('Data de Nascimento', target='data', format='%d/%m/%Y', close_when_date_chosen=True), sg.Input(key='data')],
+        [sg.Text('Endereço:', size=(15, 1)), sg.InputText('', key='endereco')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema ONG de pets').Layout(layout)
+        button, values = self.__window.Read()
+        nome = values['nome']
+        data_de_nascimento = datetime.strptime(values['data'], '%d/%m/%Y').date()
+        endereco = values['endereco']
+        self.__window.Close()
+        return {
+            "nome": nome,
+            "data_de_nascimento" : data_de_nascimento,
+            "endereco" : endereco}
+
     def mostra_doador(self, dados_doador):
         string_todos_doadores = ""
         for dado in dados_doador:
@@ -115,8 +134,7 @@ class TelaAdotante(TelaAbstrata):
         layout = [
         [sg.Text('-------- DADOS DOADOR ----------', font=("Helvica", 25))],
         [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
-        [sg.Input(key='data'),
-        sg.CalendarButton('Data de Nascimento', target='data', format='%d/%m/%Y', close_when_date_chosen=True)],
+        [sg.CalendarButton('Data de Nascimento', target='data', format='%d/%m/%Y', close_when_date_chosen=True), sg.Input(key='data')],
         [sg.Text('CPF:', size=(15, 1)), sg.InputText('', key='cpf')],
         [sg.Text('Endereço:', size=(15, 1)), sg.InputText('', key='endereco')],
         [sg.Frame(layout=[
@@ -163,6 +181,61 @@ class TelaAdotante(TelaAbstrata):
 
         return {
             "cpf": cpf,
+            "nome": nome,
+            "data_de_nascimento" : data_de_nascimento,
+            "endereco" : endereco,
+            "tipo_de_habitacao" : tipo_de_habitacao,
+            "tamanho_da_habitacao" : tamanho_da_habitacao,
+            "numero_de_animais" : numero_de_animais}
+
+    def pega_dados_adotante_alteracao(self):
+        layout = [
+        [sg.Text('-------- DADOS DOADOR ----------', font=("Helvica", 25))],
+        [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
+        [sg.CalendarButton('Data de Nascimento', target='data', format='%d/%m/%Y', close_when_date_chosen=True), sg.Input(key='data')],
+        [sg.Text('Endereço:', size=(15, 1)), sg.InputText('', key='endereco')],
+        [sg.Frame(layout=[
+            [sg.Radio('Casa ', "TIPO", key='casa', default=True, size=(10,1)), sg.Radio('Apartamento', "TIPO", key='apartamento')]],
+            title='Tipo de Habitação',
+            title_color='red',
+            relief=sg.RELIEF_SUNKEN,
+            tooltip='Use these to set flags')],
+        [sg.Frame(layout=[
+            [sg.Radio('Pequena', "TAMANHO", key='pequena', default=True, size=(10,1)), sg.Radio('Média', "TAMANHO", key='média'), sg.Radio('Grande', "TAMANHO", key='grande')]],
+            title='Tamanho da Habitação',
+            title_color='red',
+            relief=sg.RELIEF_SUNKEN,
+            tooltip='Use these to set flags')],
+        [sg.Text('Número de animais:', size=(15, 1)), sg.InputText('', key='numero_de_animais')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema ONG de pets').Layout(layout)
+        button, values = self.__window.Read()
+        nome = values['nome']
+        data_de_nascimento = datetime.strptime(values['data'], '%d/%m/%Y').date()
+        endereco = values['endereco']
+
+        if values['casa']:
+            tipo_de_habitacao = TipoHabitacao.casa
+        elif values['apartamento']:
+            tipo_de_habitacao = TipoHabitacao.apartamento
+        else:
+            tipo_de_habitacao = None
+
+        if values['pequena']:
+            tamanho_da_habitacao = TamanhoHabitacao.pequeno
+        elif values['média']:
+            tamanho_da_habitacao = TamanhoHabitacao.medio
+        elif values['grande']:
+            tamanho_da_habitacao = TamanhoHabitacao.grande
+        else:
+            tamanho_da_habitacao = None
+
+        numero_de_animais = int(values['numero_de_animais'])
+
+        self.__window.Close()
+
+        return {
             "nome": nome,
             "data_de_nascimento" : data_de_nascimento,
             "endereco" : endereco,
